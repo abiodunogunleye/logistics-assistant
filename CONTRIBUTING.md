@@ -5,7 +5,10 @@
 ```
 make install
 cp .env.example .env   # then add your ANTHROPIC_API_KEY
+./venv/Scripts/pre-commit install   # Windows; use venv/bin/pre-commit on macOS/Linux
 ```
+
+This installs a git hook that blocks commits containing `.env`-style files (except `.env.example`).
 
 ## Workflow
 
