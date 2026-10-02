@@ -11,6 +11,10 @@ The assistant will help with warehouse operations tasks such as inventory lookup
 - `data/` — sample data and fixtures
 - `docs/` — documentation
 
+## Status
+
+[![CI](https://github.com/abiodunogunleye/logistics-assistant/actions/workflows/ci.yml/badge.svg)](https://github.com/abiodunogunleye/logistics-assistant/actions/workflows/ci.yml)
+
 ## Setup
 
 1. Copy `.env.example` to `.env` and add your Anthropic API key.
