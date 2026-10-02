@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: block-env-files
+        name: Block committing .env files
+        entry: bash scripts/check-no-env.sh
+        language: system
+        pass_filenames: false
+        always_run: true
