@@ -52,17 +52,28 @@ To measure:
   ones (the API prepares each new schema once and reuses it for 24 hours).
 
 ### JSON answer quality (from the same test)
-- **`safety_alert` too broad:** it was `true` for "What do I do with a damaged
-  pallet?". A damaged empty pallet is not an injury or a dangerous situation
-  in itself. The field description needs a clearer line between a possible
-  hazard and someone being hurt or in danger.
-- **`covered_by_sops` can't say "partly":** the forklift injury question was
-  marked `true`, but only the injury steps are covered; forklifts are not.
-- **Inconsistent section format:** `sources[].section` came back as both
-  "Section 2" and "Section 1 (Reporting)".
-- **Hired-pallet rule applied to all pallets:** one answer said not to
-  dismantle or dispose of any pallet on site. SOP-EQ-01 2.5 limits that to
-  hired pallets.
+All four findings below are fixed or resolved. Confirmed with real
+`--json` runs on 2026-10-06: the damaged-pallet question returned
+`safety_alert: false`, and the forklift injury question returned
+`safety_alert: true` with `coverage: "partial"`.
+
+- **Fixed — `safety_alert` too broad:** it was `true` for "What do I do with a
+  damaged pallet?". The schema now says it is true only when a person is
+  injured or at immediate risk and must stop and alert someone now, and that
+  a damaged pallet taken out of use is not a safety alert.
+- **Fixed — `covered_by_sops` couldn't say "partly":** the forklift injury
+  question was marked `true`, but only the injury steps are covered. The
+  field is now `coverage`, with the values `full`, `partial` and `none`.
+- **Fixed — inconsistent section format:** `sources[].section` came back as
+  both "Section 2" and "Section 1 (Reporting)". The schema now asks for a
+  bare number ("4.2" for a step, "4" for a section), or the heading as
+  written for parts without numbers, such as "Reporting / Escalation".
+- **Resolved — hired-pallet rule applied to all pallets:** one answer said
+  not to dismantle or dispose of any pallet on site. That answer was right;
+  the SOP was unclear. No pallet, hired or owned, is dismantled or disposed of
+  on site; all are collected. SOP-EQ-01 2.6 (version 1.2) now says so
+  plainly. The system prompt also now tells Claude to apply a rule only to
+  the items it covers.
 
 ### Intended behaviour (not an issue)
 - **`escalate_to` is "FLM" for questions the SOPs don't cover.** The system
