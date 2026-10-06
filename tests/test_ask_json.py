@@ -15,8 +15,8 @@ VALID_ANSWER = {
         "Move it to the damaged-pallet area.",
         "Tell your FLM.",
     ],
-    "sources": [{"sop_id": "SOP-EQ-01", "section": "Section 2"}],
-    "covered_by_sops": True,
+    "sources": [{"sop_id": "SOP-EQ-01", "section": "2.2"}, {"sop_id": "SOP-EQ-01", "section": "5"}],
+    "coverage": "full",
     "safety_alert": False,
     "escalate_to": "FLM",
     "confidence": "high",
@@ -82,6 +82,22 @@ def test_schema_meets_structured_output_rules():
     assert "title" not in json.dumps(schema)
     assert schema["properties"]["escalate_to"]["enum"] == ["none", "FLM", "Senior FLM", "Shift Manager"]
     assert schema["properties"]["confidence"]["enum"] == ["high", "medium", "low"]
+    assert schema["properties"]["coverage"]["enum"] == ["full", "partial", "none"]
+    assert "covered_by_sops" not in schema["properties"]
+
+
+def test_schema_limits_safety_alert_to_people_at_risk():
+    description = answer_schema()["properties"]["safety_alert"]["description"]
+
+    assert description.startswith("True only when a person is injured or at immediate risk")
+    assert "damaged pallet being taken out of use" in description
+
+
+def test_schema_describes_the_section_format():
+    description = answer_schema()["$defs"]["Source"]["properties"]["section"]["description"]
+
+    assert "'4.2'" in description
+    assert "Reporting / Escalation" in description
 
 
 @pytest.mark.parametrize(
@@ -91,11 +107,23 @@ def test_schema_meets_structured_output_rules():
         '{"answer": "Cut off',
         json.dumps({**VALID_ANSWER, "escalate_to": "Supervisor"}),
         json.dumps({**VALID_ANSWER, "confidence": "certain"}),
+        json.dumps({**VALID_ANSWER, "coverage": "yes"}),
+        json.dumps({**{key: value for key, value in VALID_ANSWER.items() if key != "coverage"}, "covered_by_sops": True}),
         json.dumps({key: value for key, value in VALID_ANSWER.items() if key != "steps"}),
         json.dumps({**VALID_ANSWER, "extra_field": "not allowed"}),
         json.dumps({**VALID_ANSWER, "sources": [{"sop_id": "SOP-EQ-01"}]}),
     ],
-    ids=["not-json", "truncated", "bad-role", "bad-confidence", "missing-field", "extra-field", "bad-source"],
+    ids=[
+        "not-json",
+        "truncated",
+        "bad-role",
+        "bad-confidence",
+        "bad-coverage",
+        "old-coverage-field",
+        "missing-field",
+        "extra-field",
+        "bad-source",
+    ],
 )
 def test_invalid_reply_prints_a_clear_error_and_exits(ask_json, capsys, reply_text):
     with pytest.raises(SystemExit) as exit_info:

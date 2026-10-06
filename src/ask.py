@@ -15,7 +15,13 @@ class Source(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     sop_id: str = Field(description="SOP document ID, for example SOP-DG-01.")
-    section: str = Field(description="Section of that SOP the information came from, for example 'Section 2'.")
+    section: str = Field(
+        description=(
+            "Where in that SOP the information came from, as a bare number: '4.2' for a numbered step, "
+            "or '4' for a whole section. No word 'Section' and no heading text. For parts without numbers, "
+            "use the heading exactly as written, for example 'Reporting / Escalation', 'Scope' or 'Definitions'."
+        )
+    )
 
 
 # The --json reply. Field descriptions are sent to Claude as part of the schema.
@@ -25,8 +31,19 @@ class StructuredAnswer(BaseModel):
     answer: str = Field(description="Short summary of the answer for the operative, in plain UK English.")
     steps: list[str] = Field(description="Steps to follow, in order. Empty if the SOPs do not cover the question.")
     sources: list[Source] = Field(description="Every SOP section the answer is based on. Empty if none.")
-    covered_by_sops: bool = Field(description="True only if the provided SOPs answer the question.")
-    safety_alert: bool = Field(description="True if the question involves an injury, a hazard, or a dangerous situation.")
+    coverage: Literal["full", "partial", "none"] = Field(
+        description=(
+            "How well the provided SOPs answer the question: 'full' if they answer all of it, "
+            "'partial' if they answer only part of it, 'none' if they do not answer it."
+        )
+    )
+    safety_alert: bool = Field(
+        description=(
+            "True only when a person is injured or at immediate risk, and the operative must stop and alert "
+            "their FLM or a first aider now. False for routine handling of damaged stock or equipment, "
+            "such as a damaged pallet being taken out of use."
+        )
+    )
     escalate_to: Literal["none", "FLM", "Senior FLM", "Shift Manager"] = Field(
         description="The role the operative must report this to, as named in the SOPs, or 'none' if no escalation is needed."
     )
