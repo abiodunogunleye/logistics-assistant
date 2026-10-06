@@ -52,7 +52,7 @@ def test_ask_prints_text_and_token_counts(monkeypatch, capsys, fake_anthropic):
     main()
 
     out = capsys.readouterr().out
-    assert out.startswith("Quarantine it and tell your supervisor.\n")
+    assert out.startswith("Quarantine it and tell your FLM.\n")
     assert "Considering the safest procedure." not in out
     assert "Input tokens: 12" in out
     assert "Output tokens: 7" in out

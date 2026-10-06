@@ -15,4 +15,4 @@ def test_main_prints_only_text_blocks(monkeypatch, capsys, fake_anthropic):
 
     assert fake_anthropic.api_key == "test-key"
     assert fake_anthropic.calls[0]["model"] == "claude-sonnet-5-5"
-    assert capsys.readouterr().out == "Quarantine it and tell your supervisor.\n"
+    assert capsys.readouterr().out == "Quarantine it and tell your FLM.\n"

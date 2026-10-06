@@ -9,8 +9,8 @@ import pytest
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 # Modules that load .env and create an Anthropic client.
-API_MODULES = ("main", "ask")
-ENV_VARS = ("ANTHROPIC_API_KEY", "CLAUDE_MODEL")
+API_MODULES = ("main", "ask", "chat")
+ENV_VARS = ("ANTHROPIC_API_KEY", "CLAUDE_MODEL", "CLAUDE_THINKING", "CLAUDE_EFFORT")
 
 
 class RealAPICallBlocked(Exception):
@@ -59,9 +59,10 @@ def fake_anthropic(monkeypatch):
     response = SimpleNamespace(
         content=[
             SimpleNamespace(type="thinking", thinking="Considering the safest procedure."),
-            SimpleNamespace(type="text", text="Quarantine it and tell your supervisor."),
+            SimpleNamespace(type="text", text="Quarantine it and tell your FLM."),
         ],
         usage=SimpleNamespace(input_tokens=12, output_tokens=7),
+        stop_reason="end_turn",
     )
     fake = FakeAnthropic(response)
     for module_name in API_MODULES:
