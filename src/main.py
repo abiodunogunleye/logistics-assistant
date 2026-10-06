@@ -14,12 +14,12 @@ def main() -> None:
     client = Anthropic(api_key=api_key)
 
     response = client.messages.create(
-        model="claude-sonnet-5",
+        model="claude-sonnet-5-5",
         max_tokens=1024,
         messages=[{"role": "user", "content": "Hello from the logistics assistant!"}],
     )
 
-    print(response.content[0].text)
+    print("".join(block.text for block in response.content if block.type == "text"))
 
 
 if __name__ == "__main__":
