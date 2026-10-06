@@ -1,17 +1,17 @@
 # Northbank Logistics — SOP: Incident Reporting
 
 **Document ID:** SOP-IR-01
-**Version:** 1.0
+**Version:** 1.1
 **Owner:** Warehouse Operations
-**Last reviewed:** 2026-10-02
+**Last reviewed:** 2026-10-06
 
 ## Purpose
 Defines what counts as a reportable incident, how to report one, and how
 incidents are reviewed, so issues are caught consistently and acted on.
 
 ## Scope
-Applies to all warehouse operatives and shift supervisors at any Northbank
-Logistics site.
+Applies to all warehouse operatives, First Line Managers (FLMs), Senior FLMs,
+and Shift Managers at any Northbank Logistics site.
 
 ## What Counts as an Incident
 - Any injury or near-miss involving a person, however minor.
@@ -32,31 +32,33 @@ Logistics site.
 4. For injuries, also record whether first aid was given and by whom.
 
 ### 2. Immediate Escalation
-1. Notify the shift supervisor immediately for any injury, fire, chemical
-   spill, or equipment failure that could put people at risk.
-2. Do not wait for the end-of-shift review to escalate anything safety
+1. Notify your FLM immediately for any injury, fire, chemical spill, or
+   equipment failure that could put people at risk.
+2. The FLM informs the Shift Manager straight away for any injury needing
+   medical attention, fire, or chemical spill.
+3. Do not wait for the end-of-shift review to escalate anything safety
    critical.
 
-### 3. Supervisor Review
-1. The shift supervisor reviews all incidents logged during their shift
-   before it ends.
+### 3. FLM Review
+1. The FLM reviews all incidents logged in their area before the shift ends.
 2. Confirm any immediate hazard has been fully resolved, not just reported.
-3. Decide whether an incident needs same-day escalation to the warehouse
-   manager (e.g. injury requiring medical attention, significant stock
-   loss, equipment out of service).
+3. Escalate to the Senior FLM the same shift for significant stock loss or
+   equipment taken out of service.
 
 ### 4. Near-Miss Reporting
 1. Report near misses (something that could have caused harm but didn't)
    using the same process as incidents — they are not optional to log.
-2. Near misses are reviewed weekly by the warehouse manager to spot
-   patterns before they become real incidents.
+2. Near misses are reviewed weekly by the Shift Manager with the Senior FLMs
+   to spot patterns before they become real incidents.
 
 ## Reporting / Escalation
 - Injuries requiring medical attention, fires, or chemical spills: notify
-  the shift supervisor immediately and escalate to the warehouse manager the
-  same day.
+  your FLM immediately. The FLM informs the Shift Manager straight away.
+- Significant stock loss or equipment out of service: the FLM escalates to
+  the Senior FLM the same shift.
 - Repeated near misses in the same area or task: raised at the weekly
-  review for a layout, equipment, or training change.
+  Shift Manager review for a layout, equipment, or training change.
+- If your FLM is unavailable, go to the Senior FLM.
 
 ## Related Documents
 - SOP-MH-01 — Manual Handling
