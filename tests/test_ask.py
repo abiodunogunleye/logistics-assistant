@@ -65,13 +65,10 @@ def test_ask_prints_text_and_token_counts(monkeypatch, capsys, fake_anthropic):
 
     main()
 
-    out = capsys.readouterr().out
-    assert out.startswith("Quarantine it and tell your FLM.\n")
-    assert "Considering the safest procedure." not in out
-    assert "Input tokens: 12" in out
-    assert "Output tokens: 7" in out
-    assert "cut off" not in out
-    assert "declined" not in out
+    captured = capsys.readouterr()
+    assert captured.out == "Quarantine it and tell your FLM.\n"
+    assert "Considering the safest procedure." not in captured.err
+    assert "Input tokens: 12 | Output tokens: 7" in captured.err
 
 
 def test_ask_sends_shared_defaults(monkeypatch, capsys, fake_anthropic):
@@ -82,21 +79,21 @@ def test_ask_sends_shared_defaults(monkeypatch, capsys, fake_anthropic):
 
     call = fake_anthropic.calls[0]
     assert call["max_tokens"] == MAX_TOKENS == 16000
-    assert call["thinking"] == {"type": "adaptive"}
+    assert call["thinking"] == {"type": "between_tools"}
     assert call["output_config"] == {"effort": "low"}
-    assert "Model: claude-sonnet-5-5 | Thinking: on | Effort: low" in capsys.readouterr().out
+    assert "Model: claude-sonnet-5-5 | Thinking: off | Effort: low | Streaming: on" in capsys.readouterr().err
 
 
 def test_ask_uses_thinking_and_effort_settings(monkeypatch, fake_anthropic):
     monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
-    monkeypatch.setenv("CLAUDE_THINKING", "off")
+    monkeypatch.setenv("CLAUDE_THINKING", "on")
     monkeypatch.setenv("CLAUDE_EFFORT", "high")
     monkeypatch.setattr(sys, "argv", ["ask.py"])
 
     main()
 
     call = fake_anthropic.calls[0]
-    assert call["thinking"] == {"type": "between_tools"}
+    assert call["thinking"] == {"type": "adaptive"}
     assert call["output_config"] == {"effort": "high"}
 
 

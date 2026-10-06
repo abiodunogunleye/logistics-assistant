@@ -1,4 +1,6 @@
+import httpx2
 import pytest
+from anthropic import APIConnectionError
 
 import chat
 from chat import SOPS_DIR, build_system_prompt, load_sops, main
@@ -74,36 +76,37 @@ def test_prints_only_text_blocks_and_token_counts(api_key, typed, capsys, fake_a
 
     main()
 
-    out = capsys.readouterr().out
-    assert "Assistant: Quarantine it and tell your FLM." in out
-    assert "Considering the safest procedure." not in out
-    assert "[Input tokens: 12 | Output tokens: 7 | " in out
+    captured = capsys.readouterr()
+    assert "Assistant: Quarantine it and tell your FLM." in captured.out
+    assert "Considering the safest procedure." not in captured.out + captured.err
+    assert "Input tokens" not in captured.out
+    assert "| Input tokens: 12 | Output tokens: 7]" in captured.err
 
 
-def test_default_settings_are_thinking_on_at_low_effort(api_key, typed, capsys, fake_anthropic):
+def test_default_settings_are_thinking_off_at_low_effort(api_key, typed, capsys, fake_anthropic):
     typed("What do I do with a damaged carton?", "quit")
 
     main()
 
     call = fake_anthropic.calls[0]
     assert call["model"] == "claude-sonnet-5-5"
-    assert call["thinking"] == {"type": "adaptive"}
+    assert call["thinking"] == {"type": "between_tools"}
     assert call["output_config"] == {"effort": "low"}
     assert call["max_tokens"] == MAX_TOKENS
-    assert "Model: claude-sonnet-5-5 | Thinking: on | Effort: low" in capsys.readouterr().out
+    assert "Model: claude-sonnet-5-5 | Thinking: off | Effort: low" in capsys.readouterr().out
 
 
-def test_thinking_off_sends_between_tools(api_key, typed, capsys, fake_anthropic, monkeypatch):
-    monkeypatch.setenv("CLAUDE_THINKING", "off")
+def test_thinking_on_sends_adaptive(api_key, typed, capsys, fake_anthropic, monkeypatch):
+    monkeypatch.setenv("CLAUDE_THINKING", "on")
     monkeypatch.setenv("CLAUDE_EFFORT", "medium")
     typed("What do I do with a damaged carton?", "quit")
 
     main()
 
     call = fake_anthropic.calls[0]
-    assert call["thinking"] == {"type": "between_tools"}
+    assert call["thinking"] == {"type": "adaptive"}
     assert call["output_config"] == {"effort": "medium"}
-    assert "Thinking: off | Effort: medium" in capsys.readouterr().out
+    assert "Thinking: on | Effort: medium" in capsys.readouterr().out
 
 
 def test_invalid_settings_raise_before_any_api_call(api_key, fake_anthropic, monkeypatch):
@@ -161,25 +164,20 @@ def test_blank_input_is_skipped(api_key, typed, fake_anthropic):
     assert fake_anthropic.calls == []
 
 
-class FakeAPIError(Exception):
-    pass
-
-
 @pytest.fixture
-def failing_api(monkeypatch, fake_anthropic):
-    def fail(**kwargs):
-        raise FakeAPIError("overloaded")
-
-    monkeypatch.setattr(chat, "APIError", FakeAPIError)
-    monkeypatch.setattr(fake_anthropic.messages, "create", fail)
+def failing_api(fake_anthropic):
+    """Make every streamed request fail before any text arrives."""
+    request = httpx2.Request("POST", "https://api.anthropic.com/v1/messages")
+    fake_anthropic.stream_error = APIConnectionError(request=request)
+    fake_anthropic.stream_fail_after = 0
     return fake_anthropic
 
 
 def test_failed_call_leaves_history_unchanged(failing_api):
     history = [{"role": "user", "content": "Earlier question"}, {"role": "assistant", "content": "Earlier answer"}]
 
-    with pytest.raises(FakeAPIError):
-        chat.chat_turn(failing_api, {"model": "claude-sonnet-5-5"}, "system", history, "This call fails")
+    with pytest.raises(APIConnectionError):
+        chat.chat_turn(failing_api, {"model": "claude-sonnet-5-5"}, "system", history, "This call fails", stream=True)
 
     assert history == [{"role": "user", "content": "Earlier question"}, {"role": "assistant", "content": "Earlier answer"}]
 
@@ -189,7 +187,7 @@ def test_api_error_is_printed_and_chat_continues(api_key, typed, capsys, failing
 
     main()
 
-    assert capsys.readouterr().out.count("API error: overloaded") == 2
+    assert capsys.readouterr().out.count("API error: Connection error.") == 2
 
 
 def test_chat_raises_without_api_key():

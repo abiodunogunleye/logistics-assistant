@@ -23,6 +23,7 @@ def test_main_prints_only_text_blocks(monkeypatch, capsys, fake_anthropic):
 def test_main_uses_thinking_and_effort_settings(monkeypatch, fake_anthropic):
     monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
     monkeypatch.setenv("CLAUDE_MODEL", "claude-opus-5-5")
+    monkeypatch.setenv("CLAUDE_THINKING", "on")  # Opus 5.5 can't turn thinking off
     monkeypatch.setenv("CLAUDE_EFFORT", "medium")
 
     main()
