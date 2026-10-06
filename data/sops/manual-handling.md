@@ -1,7 +1,7 @@
 # Northbank Logistics — SOP: Manual Handling
 
 **Document ID:** SOP-MH-01
-**Version:** 1.1
+**Version:** 1.2
 **Owner:** Warehouse Operations
 **Last reviewed:** 2026-10-06
 
@@ -40,22 +40,27 @@ lift, carry, push, or pull loads as part of their role.
 ### 4. Equipment Use
 1. Only operators trained and signed off on a piece of equipment (pallet
    truck, stacker, etc.) may use it unsupervised.
-2. Check equipment for visible defects before use and report faults to your
-   FLM rather than working around them.
+2. Do a quick visual check for defects before each use. The full pre-use
+   check is done at the start of each shift and recorded on the Pre-Use
+   Equipment Checklist, per SOP-EQ-01.
+3. Report faults to your FLM rather than working around them.
 
 ### 5. Reporting Strain or Injury
-1. Report any strain, pain, or injury to your FLM immediately, however minor
-   it seems.
-2. Log the incident in the incident system the same shift, per SOP-IR-01.
+1. Report any strain, pain, or injury to your FLM or a first aider
+   immediately, however minor it seems. Make sure your FLM knows, even if a
+   first aider has dealt with it.
+2. Log the incident in the incident system (or paper log if the system is
+   down) the same shift, per SOP-IR-01.
 3. Do not continue manual handling duties after an injury until cleared by
    your FLM.
 
 ## Reporting / Escalation
-- Any injury, however minor: report to your FLM immediately and log per
-  SOP-IR-01.
+- Any injury, however minor: report to your FLM or a first aider
+  immediately, and log per SOP-IR-01.
 - Repeated strain reports from the same task or area: the FLM raises it with
   the Senior FLM as a task redesign or equipment request.
 - If your FLM is unavailable, go to the Senior FLM.
 
 ## Related Documents
 - SOP-IR-01 — Incident Reporting
+- SOP-EQ-01 — Pallets & Handling Equipment

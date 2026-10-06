@@ -1,7 +1,7 @@
 # Northbank Logistics — SOP: Pallets & Handling Equipment
 
 **Document ID:** SOP-EQ-01
-**Version:** 1.0
+**Version:** 1.1
 **Owner:** Warehouse Operations
 **Last reviewed:** 2026-10-06
 
@@ -15,9 +15,9 @@ Regulations 1998 (PUWER) to keep work equipment in a safe condition.
 ## Scope
 Applies to all warehouse operatives, First Line Managers (FLMs), Senior FLMs,
 and Shift Managers at any Northbank Logistics site. Covers empty wooden and
-plastic pallets (owned and hired), manual and powered pallet trucks, and roll
-cages. Forklifts and other lifting equipment are not covered by this SOP —
-ask your FLM.
+plastic pallets (owned and hired), manual and powered pallet trucks, manual
+and powered pedestrian stackers, and roll cages. Forklifts and other lifting
+equipment are not covered by this SOP — ask your FLM.
 
 ## Procedure
 
@@ -38,32 +38,46 @@ ask your FLM.
    racking.
 2. Attach a "Do Not Use — Damaged" tag stating the defect, the date, and who
    found it.
-3. Move it to the designated, clearly signed damaged-pallet area, kept
+3. Log the damaged pallet in the incident system (or paper log if the system
+   is down) the same shift, recording the defect and, for pallets that
+   arrived with a delivery, the supplier. This lets repeated damage be
+   spotted.
+4. Move it to the designated, clearly signed damaged-pallet area, kept
    separate from good pallets and away from walkways and fire exits.
-4. Keep hired or pooled pallets separate from owned pallets in the
+5. Keep hired or pooled pallets separate from owned pallets in the
    damaged-pallet area. Hired pallets belong to the pool company — never
    dismantle or dispose of them on site.
-5. No pallets are repaired on site. Damaged pallets stay in the
+6. No pallets are repaired on site. Damaged pallets stay in the
    damaged-pallet area until they are collected: hired pallets go back to the
    pool company, and owned pallets are scrapped or collected by a pallet
    company.
 
 ### 3. Pre-Use Checks on Handling Equipment
-1. Check each pallet truck or roll cage at the start of each shift, and
-   record the check on the Pre-Use Equipment Checklist (paper or handheld).
+1. Check each pallet truck, stacker, or roll cage at the start of each
+   shift, and record the check on the Pre-Use Equipment Checklist (paper or
+   handheld).
 2. Pallet trucks (manual and powered):
    - forks are straight, with no cracks or bends
    - wheels and fork rollers are present, undamaged, and turn freely
    - the truck lifts, holds a load without sinking, and lowers when released
    - the handle and controls work and return to neutral
-3. Powered pallet trucks only, in addition to the checks above:
+3. Stackers (manual and powered):
+   - forks and mast are straight, with no cracks or bends
+   - lift chains are present, undamaged, and evenly tensioned
+   - the forks lift smoothly, hold a load without creeping down, and lower
+     under control
+   - there are no hydraulic oil leaks
+   - the load backrest is secure, and wheels and stabiliser legs are
+     undamaged
+4. Powered pallet trucks and powered stackers only, in addition to the
+   checks above:
    - the battery is charged and the charging lead is undamaged
    - the brakes, horn, and emergency reverse (belly button) work
-4. Roll cages:
+5. Roll cages:
    - all castors are present and turn freely; brakes work where fitted
    - the frame, mesh, and shelves are not bent, broken, or sharp
    - gates and shelves latch securely
-5. Only operators trained and signed off on a piece of equipment may use it
+6. Only operators trained and signed off on a piece of equipment may use it
    unsupervised, per SOP-MH-01 Section 4.
 
 ### 4. Taking Equipment Out of Use
@@ -82,7 +96,8 @@ ask your FLM.
 ### 5. Reporting
 1. Tell your FLM about any damaged pallet stock or faulty equipment straight
    away.
-2. Log faulty equipment in the incident system the same shift, per SOP-IR-01.
+2. Log faulty equipment and damaged pallets in the incident system (or paper
+   log if the system is down) the same shift, per SOP-IR-01.
 3. The FLM reports the fault to maintenance for repair or replacement, and
    escalates to the Senior FLM the same shift for any equipment taken out of
    service.
@@ -96,7 +111,7 @@ ask your FLM.
 - Not enough working equipment to run the shift: the FLM escalates to the
   Senior FLM, who informs the Shift Manager.
 - Repeated damaged pallets from the same supplier: the FLM raises it with the
-  Senior FLM.
+  Senior FLM, who follows up with the supplier and informs the Shift Manager.
 - If your FLM is unavailable, go to the Senior FLM.
 
 ## Related Documents

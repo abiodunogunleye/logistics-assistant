@@ -1,7 +1,7 @@
 # Northbank Logistics — SOP: Damaged Goods Handling
 
 **Document ID:** SOP-DG-01
-**Version:** 1.1
+**Version:** 1.2
 **Owner:** Warehouse Operations
 **Last reviewed:** 2026-10-06
 
@@ -39,14 +39,14 @@ during goods-in, putaway, picking, packing, or routine stock checks.
    down) within 15 minutes of discovery.
 2. Record SKU, quantity, damage type, and where it was found.
 3. Take a photo of the damage where the system supports photo attachments.
-4. Tell your FLM straight away for high-value SKUs or damage affecting more
-   than one unit of the same batch.
+4. Tell your FLM straight away for high-value items (see SOP-IR-01
+   Definitions) or damage affecting more than one unit of the same batch.
 
 ### 4. Resolution
 1. The FLM decides whether the item is written off, returned to supplier,
    or downgraded for internal use, per current stock policy.
-2. Write-offs of high-value SKUs, or of a whole batch, need Senior FLM
-   approval before stock records are changed.
+2. Write-offs of high-value items (see SOP-IR-01 Definitions), or of a whole
+   batch, need Senior FLM approval before stock records are changed.
 3. Update stock records to remove written-off quantity from available stock
    the same day.
 4. File supplier-fault damage against the relevant purchase order for
@@ -60,12 +60,13 @@ during goods-in, putaway, picking, packing, or routine stock checks.
 
 ## Reporting / Escalation
 - Any damage affecting food safety or chemical containment: notify your FLM
-  immediately, not at end of shift. The FLM informs the Shift Manager the
-  same shift.
+  immediately, not at end of shift. The FLM informs the Shift Manager
+  straight away.
 - Repeated damage from the same supplier: the FLM raises it with the Senior
-  FLM, who takes it to the Shift Manager for supplier follow-up.
+  FLM, who follows up with the supplier and informs the Shift Manager.
 - If your FLM is unavailable, go to the Senior FLM.
 
 ## Related Documents
 - SOP-GI-01 — Goods-In & Receiving
 - SOP-GO-01 — Goods-Out & Dispatch
+- SOP-IR-01 — Incident Reporting

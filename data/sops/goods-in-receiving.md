@@ -1,7 +1,7 @@
 # Northbank Logistics — SOP: Goods-In & Receiving
 
 **Document ID:** SOP-GI-01
-**Version:** 1.2
+**Version:** 1.3
 **Owner:** Warehouse Operations
 **Last reviewed:** 2026-10-06
 
@@ -46,12 +46,15 @@ transfers.
 
 ### 4. Discrepancy Handling
 1. Log any quantity mismatch, wrong SKU, or damaged pallet in the incident
-   system within 15 minutes of discovery.
+   system (or paper log if the system is down) within 15 minutes of
+   discovery.
 2. Hold the rest of the affected pallet in goods-in staging until your FLM
    confirms how to proceed — do not put away stock with an open discrepancy.
    Damaged items do not stay in staging: they go to quarantine per SOP-DG-01.
-3. For repeated or high-value discrepancies, the FLM escalates to the Senior
-   FLM, who notifies the buyer or supplier contact.
+3. For repeated discrepancies, or discrepancies on high-value items (see
+   SOP-IR-01 Definitions), the FLM escalates to the Senior FLM, who follows
+   up with the buyer or supplier contact. If the same supplier causes
+   repeated problems, the Senior FLM also informs the Shift Manager.
 
 ### 5. Putaway
 1. Putaway only stock that has passed checking and quality review.
@@ -61,8 +64,9 @@ transfers.
    existing partial bin first if space allows.
 
 ## Reporting / Escalation
-- Rejected deliveries or large discrepancies: notify your FLM immediately.
-  The FLM informs the Senior FLM before the delivery vehicle leaves site.
+- Rejected deliveries or large discrepancies (see SOP-IR-01 Definitions):
+  notify your FLM immediately. The FLM informs the Senior FLM before the
+  delivery vehicle leaves site.
 - Damage found on arrival: the damaged item goes to quarantine per
   SOP-DG-01; the rest of the pallet is held in goods-in staging per Section 4.
 - If your FLM is unavailable, go to the Senior FLM.
@@ -70,3 +74,4 @@ transfers.
 ## Related Documents
 - SOP-DG-01 — Damaged Goods Handling
 - SOP-GO-01 — Goods-Out & Dispatch
+- SOP-IR-01 — Incident Reporting

@@ -1,7 +1,7 @@
 # Northbank Logistics — SOP: Picking Errors
 
 **Document ID:** SOP-PE-01
-**Version:** 1.1
+**Version:** 1.2
 **Owner:** Warehouse Operations
 **Last reviewed:** 2026-10-06
 
@@ -36,7 +36,8 @@ contents, or bin location.
 4. Log the error in the incident system (or the paper incident log if the
    system is down) within 5 minutes of discovery.
 5. Tell your FLM straight away for any error involving a safety-critical
-   item, a high-value SKU, or a carton already sealed.
+   item, a high-value item (see SOP-IR-01 Definitions), or a carton already
+   sealed.
 
 ### 2. Correcting
 1. Return any wrongly picked item to its correct bin location — do not leave
@@ -62,8 +63,8 @@ contents, or bin location.
    by the FLM as a stock layout change request, not worked around.
 
 ## Reporting / Escalation
-- Any error on a safety-critical or high-value SKU: notify your FLM
-  immediately, not at end of shift.
+- Any error on a safety-critical or high-value item (see SOP-IR-01
+  Definitions): notify your FLM immediately, not at end of shift.
 - Three or more errors by the same picker in one shift: the FLM pulls them
   from picking for a refresher before they continue, and informs the Senior
   FLM.
@@ -73,3 +74,4 @@ contents, or bin location.
 
 ## Related Documents
 - SOP-GO-01 — Goods-Out & Dispatch
+- SOP-IR-01 — Incident Reporting
