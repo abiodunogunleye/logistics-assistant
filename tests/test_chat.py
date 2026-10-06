@@ -83,30 +83,30 @@ def test_prints_only_text_blocks_and_token_counts(api_key, typed, capsys, fake_a
     assert "| Input tokens: 12 | Output tokens: 7]" in captured.err
 
 
-def test_default_settings_are_thinking_on_at_low_effort(api_key, typed, capsys, fake_anthropic):
+def test_default_settings_are_thinking_off_at_low_effort(api_key, typed, capsys, fake_anthropic):
     typed("What do I do with a damaged carton?", "quit")
 
     main()
 
     call = fake_anthropic.calls[0]
     assert call["model"] == "claude-sonnet-5-5"
-    assert call["thinking"] == {"type": "adaptive"}
+    assert call["thinking"] == {"type": "between_tools"}
     assert call["output_config"] == {"effort": "low"}
     assert call["max_tokens"] == MAX_TOKENS
-    assert "Model: claude-sonnet-5-5 | Thinking: on | Effort: low" in capsys.readouterr().out
+    assert "Model: claude-sonnet-5-5 | Thinking: off | Effort: low" in capsys.readouterr().out
 
 
-def test_thinking_off_sends_between_tools(api_key, typed, capsys, fake_anthropic, monkeypatch):
-    monkeypatch.setenv("CLAUDE_THINKING", "off")
+def test_thinking_on_sends_adaptive(api_key, typed, capsys, fake_anthropic, monkeypatch):
+    monkeypatch.setenv("CLAUDE_THINKING", "on")
     monkeypatch.setenv("CLAUDE_EFFORT", "medium")
     typed("What do I do with a damaged carton?", "quit")
 
     main()
 
     call = fake_anthropic.calls[0]
-    assert call["thinking"] == {"type": "between_tools"}
+    assert call["thinking"] == {"type": "adaptive"}
     assert call["output_config"] == {"effort": "medium"}
-    assert "Thinking: off | Effort: medium" in capsys.readouterr().out
+    assert "Thinking: on | Effort: medium" in capsys.readouterr().out
 
 
 def test_invalid_settings_raise_before_any_api_call(api_key, fake_anthropic, monkeypatch):

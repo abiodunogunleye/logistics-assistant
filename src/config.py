@@ -13,7 +13,8 @@ MAX_TOKENS = 16000
 THINKING_MODES = {"on": {"type": "adaptive"}, "off": {"type": "between_tools"}}
 EFFORT_LEVELS = ("low", "medium", "high", "xhigh", "max")
 EFFORT_LEVELS_WITHOUT_THINKING = ("low", "medium", "high")
-DEFAULT_THINKING = "on"
+# Off by default: faster with correct answers in testing; see "Decisions" in docs/SPEC.md.
+DEFAULT_THINKING = "off"
 DEFAULT_EFFORT = "low"
 STREAM_MODES = {"on": True, "off": False}
 DEFAULT_STREAM = "on"

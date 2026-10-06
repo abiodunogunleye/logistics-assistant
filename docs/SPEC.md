@@ -28,6 +28,32 @@ Connection to a real WMS, voice input, multiple sites, mobile app
 ## Tech
 Python, Claude API, MCP server, Claude Agent SDK, GitHub
 
+## Decisions
+
+### Thinking off by default (2026-10-06, to recheck in Stage 6)
+`CLAUDE_THINKING` now defaults to `off` (was `on`), with effort `low` and
+streaming on. Manual streaming test with `claude-sonnet-5-5`:
+
+| Streaming | Thinking | Time to first text | Total time |
+|---|---|---|---|
+| off | on | 9.5s | — |
+| on | on | 5.9s | — |
+| on | off | 2.0s | 5.0s |
+
+With thinking off, the answer was correct and used about half the output
+tokens. Operatives read answers on the warehouse floor, so a first line in
+about 2 seconds matters.
+
+To recheck in Stage 6 with the 20-question test set:
+- Answer quality with thinking off versus on, especially for questions that
+  span more than one SOP. An earlier single comparison found the thinking-off
+  answer slightly less precise.
+- Time to first text, total time and output tokens across all 20 questions,
+  not one.
+
+`claude-opus-5-5` cannot turn thinking off, so `CLAUDE_MODEL=claude-opus-5-5`
+needs `CLAUDE_THINKING=on`.
+
 ## Known issues
 
 ### Slow replies from `ask.py --json` (to measure in Stage 6)

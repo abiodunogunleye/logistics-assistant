@@ -46,7 +46,7 @@ def test_valid_json_is_printed_and_matches_the_schema(ask_json, capsys):
     captured = capsys.readouterr()
     assert json.loads(captured.out) == VALID_ANSWER
     assert "Input tokens: 12" in captured.err
-    assert "Model: claude-sonnet-5-5 | Thinking: on | Effort: low" in captured.err
+    assert "Model: claude-sonnet-5-5 | Thinking: off | Effort: low" in captured.err
 
 
 def test_json_mode_requests_structured_output(ask_json):
@@ -56,7 +56,7 @@ def test_json_mode_requests_structured_output(ask_json):
         "effort": "low",
         "format": {"type": "json_schema", "schema": answer_schema()},
     }
-    assert call["thinking"] == {"type": "adaptive"}
+    assert call["thinking"] == {"type": "between_tools"}
     assert call["system"] == build_system_prompt()
     assert call["messages"] == [{"role": "user", "content": "Damaged pallet?"}]
 
