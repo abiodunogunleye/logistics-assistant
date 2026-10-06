@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 
 DEFAULT_MODEL = "claude-sonnet-5-5"
 DEFAULT_QUESTION = "In one sentence, what should a warehouse operative do if they find damaged stock?"
+MAX_TOKENS = 16000
 
 
 def main() -> None:
@@ -22,11 +23,15 @@ def main() -> None:
 
     response = client.messages.create(
         model=model,
-        max_tokens=1024,
+        max_tokens=MAX_TOKENS,
         messages=[{"role": "user", "content": question}],
     )
 
     print("".join(block.text for block in response.content if block.type == "text"))
+    if response.stop_reason == "max_tokens":
+        print("\n[Reply cut off at the token limit.]")
+    elif response.stop_reason == "refusal":
+        print("\n[Claude declined to answer this.]")
     print()
     print(f"Model: {model}")
     print(f"Input tokens: {response.usage.input_tokens}")
