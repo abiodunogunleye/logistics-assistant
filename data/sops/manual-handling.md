@@ -1,9 +1,9 @@
 # Northbank Logistics — SOP: Manual Handling
 
 **Document ID:** SOP-MH-01
-**Version:** 1.0
+**Version:** 1.1
 **Owner:** Warehouse Operations
-**Last reviewed:** 2026-10-02
+**Last reviewed:** 2026-10-06
 
 ## Purpose
 Defines safe manual handling practice for warehouse operatives, to reduce
@@ -40,21 +40,22 @@ lift, carry, push, or pull loads as part of their role.
 ### 4. Equipment Use
 1. Only operators trained and signed off on a piece of equipment (pallet
    truck, stacker, etc.) may use it unsupervised.
-2. Check equipment for visible defects before use and report faults rather
-   than working around them.
+2. Check equipment for visible defects before use and report faults to your
+   FLM rather than working around them.
 
 ### 5. Reporting Strain or Injury
-1. Report any strain, pain, or injury to the shift supervisor immediately,
-   however minor it seems.
+1. Report any strain, pain, or injury to your FLM immediately, however minor
+   it seems.
 2. Log the incident in the incident system the same shift, per SOP-IR-01.
-3. Do not continue manual handling duties after an injury until cleared by a
-   supervisor.
+3. Do not continue manual handling duties after an injury until cleared by
+   your FLM.
 
 ## Reporting / Escalation
-- Any injury, however minor: report to the shift supervisor immediately and
-  log per SOP-IR-01.
-- Repeated strain reports from the same task or area: supervisor raises it
-  as a task redesign or equipment request.
+- Any injury, however minor: report to your FLM immediately and log per
+  SOP-IR-01.
+- Repeated strain reports from the same task or area: the FLM raises it with
+  the Senior FLM as a task redesign or equipment request.
+- If your FLM is unavailable, go to the Senior FLM.
 
 ## Related Documents
 - SOP-IR-01 — Incident Reporting
