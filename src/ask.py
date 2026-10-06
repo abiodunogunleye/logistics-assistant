@@ -1,29 +1,20 @@
-import os
 import sys
 
 from anthropic import Anthropic
-from dotenv import load_dotenv
 
-DEFAULT_MODEL = "claude-sonnet-5-5"
+from config import load_config
+
 DEFAULT_QUESTION = "In one sentence, what should a warehouse operative do if they find damaged stock?"
-MAX_TOKENS = 16000
 
 
 def main() -> None:
-    load_dotenv()
-
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise RuntimeError("ANTHROPIC_API_KEY is not set. Copy .env.example to .env and add your key.")
-
-    model = os.environ.get("CLAUDE_MODEL") or DEFAULT_MODEL
+    config = load_config()
     question = " ".join(sys.argv[1:]) or DEFAULT_QUESTION
 
-    client = Anthropic(api_key=api_key)
+    client = Anthropic(api_key=config.api_key)
 
     response = client.messages.create(
-        model=model,
-        max_tokens=MAX_TOKENS,
+        **config.request_params(),
         messages=[{"role": "user", "content": question}],
     )
 
@@ -33,7 +24,7 @@ def main() -> None:
     elif response.stop_reason == "refusal":
         print("\n[Claude declined to answer this.]")
     print()
-    print(f"Model: {model}")
+    print(config.describe())
     print(f"Input tokens: {response.usage.input_tokens}")
     print(f"Output tokens: {response.usage.output_tokens}")
 

@@ -8,7 +8,7 @@ import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
-# Modules that load .env and create an Anthropic client.
+# config is the only module that loads .env; these modules create an Anthropic client.
 API_MODULES = ("main", "ask", "chat")
 ENV_VARS = ("ANTHROPIC_API_KEY", "CLAUDE_MODEL", "CLAUDE_THINKING", "CLAUDE_EFFORT")
 
@@ -46,11 +46,10 @@ def isolate_from_env_and_api(monkeypatch):
     for name in ENV_VARS:
         monkeypatch.delenv(name, raising=False)
 
+    monkeypatch.setattr(importlib.import_module("config"), "load_dotenv", lambda *args, **kwargs: False)
     monkeypatch.setattr(anthropic, "Anthropic", BlockedAnthropic)
     for module_name in API_MODULES:
-        module = importlib.import_module(module_name)
-        monkeypatch.setattr(module, "load_dotenv", lambda *args, **kwargs: False)
-        monkeypatch.setattr(module, "Anthropic", BlockedAnthropic)
+        monkeypatch.setattr(importlib.import_module(module_name), "Anthropic", BlockedAnthropic)
 
 
 @pytest.fixture

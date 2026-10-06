@@ -1,6 +1,7 @@
 import pytest
 
-from main import MAX_TOKENS, main
+from config import MAX_TOKENS
+from main import main
 
 
 def test_main_raises_without_api_key():
@@ -17,6 +18,19 @@ def test_main_prints_only_text_blocks(monkeypatch, capsys, fake_anthropic):
     assert fake_anthropic.calls[0]["model"] == "claude-sonnet-5-5"
     assert fake_anthropic.calls[0]["max_tokens"] == MAX_TOKENS == 16000
     assert capsys.readouterr().out == "Quarantine it and tell your FLM.\n"
+
+
+def test_main_uses_thinking_and_effort_settings(monkeypatch, fake_anthropic):
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
+    monkeypatch.setenv("CLAUDE_MODEL", "claude-opus-5-5")
+    monkeypatch.setenv("CLAUDE_EFFORT", "medium")
+
+    main()
+
+    call = fake_anthropic.calls[0]
+    assert call["model"] == "claude-opus-5-5"
+    assert call["thinking"] == {"type": "adaptive"}
+    assert call["output_config"] == {"effort": "medium"}
 
 
 @pytest.mark.parametrize(

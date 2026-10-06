@@ -2,7 +2,8 @@ import sys
 
 import pytest
 
-from ask import DEFAULT_MODEL, DEFAULT_QUESTION, MAX_TOKENS, main
+from ask import DEFAULT_QUESTION, main
+from config import DEFAULT_MODEL, MAX_TOKENS
 
 
 def test_ask_raises_without_api_key(monkeypatch):
@@ -60,13 +61,30 @@ def test_ask_prints_text_and_token_counts(monkeypatch, capsys, fake_anthropic):
     assert "declined" not in out
 
 
-def test_ask_sends_max_tokens(monkeypatch, fake_anthropic):
+def test_ask_sends_shared_defaults(monkeypatch, capsys, fake_anthropic):
     monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
     monkeypatch.setattr(sys, "argv", ["ask.py"])
 
     main()
 
-    assert fake_anthropic.calls[0]["max_tokens"] == MAX_TOKENS == 16000
+    call = fake_anthropic.calls[0]
+    assert call["max_tokens"] == MAX_TOKENS == 16000
+    assert call["thinking"] == {"type": "adaptive"}
+    assert call["output_config"] == {"effort": "low"}
+    assert "Model: claude-sonnet-5-5 | Thinking: on | Effort: low" in capsys.readouterr().out
+
+
+def test_ask_uses_thinking_and_effort_settings(monkeypatch, fake_anthropic):
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
+    monkeypatch.setenv("CLAUDE_THINKING", "off")
+    monkeypatch.setenv("CLAUDE_EFFORT", "high")
+    monkeypatch.setattr(sys, "argv", ["ask.py"])
+
+    main()
+
+    call = fake_anthropic.calls[0]
+    assert call["thinking"] == {"type": "between_tools"}
+    assert call["output_config"] == {"effort": "high"}
 
 
 @pytest.mark.parametrize(

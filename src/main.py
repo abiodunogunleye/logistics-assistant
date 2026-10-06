@@ -1,23 +1,14 @@
-import os
-
 from anthropic import Anthropic
-from dotenv import load_dotenv
 
-MAX_TOKENS = 16000
+from config import load_config
 
 
 def main() -> None:
-    load_dotenv()
-
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise RuntimeError("ANTHROPIC_API_KEY is not set. Copy .env.example to .env and add your key.")
-
-    client = Anthropic(api_key=api_key)
+    config = load_config()
+    client = Anthropic(api_key=config.api_key)
 
     response = client.messages.create(
-        model="claude-sonnet-5-5",
-        max_tokens=MAX_TOKENS,
+        **config.request_params(),
         messages=[{"role": "user", "content": "Hello from the logistics assistant!"}],
     )
 
