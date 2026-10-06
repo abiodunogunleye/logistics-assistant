@@ -4,8 +4,9 @@ from typing import Literal
 from anthropic import Anthropic
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-from chat import build_system_prompt, reply_text
+from chat import build_system_prompt
 from config import load_config
+from streaming import CONNECTION_LOST_NOTE, get_answer, print_answer_stats, reply_text
 
 DEFAULT_QUESTION = "In one sentence, what should a warehouse operative do if they find damaged stock?"
 JSON_FLAG = "--json"
@@ -112,21 +113,27 @@ def main() -> None:
             sys.exit(1)
         return
 
-    response = client.messages.create(
-        **config.request_params(),
-        system=system,
-        messages=[{"role": "user", "content": question}],
+    # Plain mode: the answer's text is printed by get_answer, streamed if CLAUDE_STREAM is on.
+    answer = get_answer(
+        client,
+        config.request_params(),
+        system,
+        [{"role": "user", "content": question}],
+        stream=config.stream,
     )
-
-    print("".join(block.text for block in response.content if block.type == "text"))
-    if response.stop_reason == "max_tokens":
-        print("\n[Reply cut off at the token limit.]")
-    elif response.stop_reason == "refusal":
-        print("\n[Claude declined to answer this.]")
     print()
-    print(config.describe())
-    print(f"Input tokens: {response.usage.input_tokens}")
-    print(f"Output tokens: {response.usage.output_tokens}")
+
+    if answer.message is None:
+        print(f"\n{CONNECTION_LOST_NOTE}")
+    elif answer.message.stop_reason == "max_tokens":
+        print("\n[Reply cut off at the token limit.]")
+    elif answer.message.stop_reason == "refusal":
+        print("\n[Claude declined to answer this.]")
+    print(config.describe_with_streaming(), file=sys.stderr)
+    print_answer_stats(answer)
+
+    if answer.message is None:
+        sys.exit(1)
 
 
 if __name__ == "__main__":

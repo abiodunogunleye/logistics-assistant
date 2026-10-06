@@ -74,5 +74,27 @@ def test_invalid_settings_raise(api_key, monkeypatch, thinking, effort, message)
         load_config()
 
 
+def test_streaming_is_on_by_default(api_key):
+    config = load_config()
+
+    assert config.stream is True
+    assert config.describe_with_streaming() == "Model: claude-sonnet-5-5 | Thinking: on | Effort: low | Streaming: on"
+    assert "stream" not in config.request_params()
+
+
+@pytest.mark.parametrize("value, expected", [("off", False), ("OFF", False), (" on ", True), ("", True)])
+def test_reads_stream_setting(api_key, monkeypatch, value, expected):
+    monkeypatch.setenv("CLAUDE_STREAM", value)
+
+    assert load_config().stream is expected
+
+
+def test_invalid_stream_setting_raises(api_key, monkeypatch):
+    monkeypatch.setenv("CLAUDE_STREAM", "yes")
+
+    with pytest.raises(RuntimeError, match="CLAUDE_STREAM must be 'on' or 'off'"):
+        load_config()
+
+
 def test_api_key_is_kept_out_of_printed_config(api_key):
     assert "test-key" not in repr(load_config())

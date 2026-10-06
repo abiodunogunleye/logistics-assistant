@@ -1,9 +1,9 @@
-import time
 from pathlib import Path
 
-from anthropic import Anthropic, APIError
+from anthropic import Anthropic
 
 from config import load_config
+from streaming import CONNECTION_LOST_NOTE, STREAM_ERRORS, Answer, get_answer, print_answer_stats
 
 ROOT = Path(__file__).resolve().parent.parent
 SOPS_DIR = ROOT / "data" / "sops"
@@ -25,20 +25,17 @@ def build_system_prompt(prompt_path: Path = SYSTEM_PROMPT_PATH, sops_dir: Path =
     return template.replace("{SOPS}", load_sops(sops_dir))
 
 
-def reply_text(response) -> str:
-    return "".join(block.text for block in response.content if block.type == "text")
+def chat_turn(client, request_params: dict, system: str, history: list, question: str, stream: bool) -> Answer:
+    """Send the question with the full history and print the answer.
 
-
-def chat_turn(client, request_params: dict, system: str, history: list, question: str):
-    """Send the question with the full history, and record both sides of the turn only if the call succeeds."""
+    Both sides of the turn are recorded only if the answer arrived complete, so a failed or
+    dropped answer never leaves an unanswered question in the history.
+    """
     messages = [*history, {"role": "user", "content": question}]
-    response = client.messages.create(
-        **request_params,
-        system=system,
-        messages=messages,
-    )
-    history.extend([messages[-1], {"role": "assistant", "content": response.content}])
-    return response
+    answer = get_answer(client, request_params, system, messages, stream)
+    if answer.message is not None:
+        history.extend([messages[-1], {"role": "assistant", "content": answer.message.content}])
+    return answer
 
 
 def main() -> None:
@@ -49,7 +46,7 @@ def main() -> None:
     history = []
 
     print("Northbank Logistics Warehouse Assistant. Type 'quit' to exit.")
-    print(config.describe())
+    print(config.describe_with_streaming())
 
     while True:
         try:
@@ -63,23 +60,21 @@ def main() -> None:
         if not question:
             continue
 
-        started = time.perf_counter()
+        print("\nAssistant: ", end="", flush=True)
         try:
-            response = chat_turn(client, request_params, system, history, question)
-        except APIError as error:
+            answer = chat_turn(client, request_params, system, history, question, config.stream)
+        except STREAM_ERRORS as error:
             print(f"\nAPI error: {error}")
             continue
-        elapsed = time.perf_counter() - started
+        print()
 
-        print(f"\nAssistant: {reply_text(response)}")
-        if response.stop_reason == "max_tokens":
+        if answer.message is None:
+            print(f"\n{CONNECTION_LOST_NOTE}")
+        elif answer.message.stop_reason == "max_tokens":
             print('\n[Reply cut off at the token limit. Ask "continue" for the rest.]')
-        elif response.stop_reason == "refusal":
+        elif answer.message.stop_reason == "refusal":
             print("\n[Claude declined to answer this. Rephrase the question or ask your FLM.]")
-        print(
-            f"\n[Input tokens: {response.usage.input_tokens} | Output tokens: {response.usage.output_tokens}"
-            f" | {elapsed:.1f}s]"
-        )
+        print_answer_stats(answer)
 
 
 if __name__ == "__main__":

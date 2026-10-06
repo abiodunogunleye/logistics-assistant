@@ -154,7 +154,7 @@ def test_incomplete_reply_prints_a_clear_error_and_exits(ask_json, capsys, fake_
     assert message in captured.err
 
 
-def test_plain_mode_is_unchanged(monkeypatch, fake_anthropic, capsys):
+def test_plain_mode_sends_no_json_format(monkeypatch, fake_anthropic, capsys):
     monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
     monkeypatch.setattr(sys, "argv", ["ask.py", "Damaged", "pallet?"])
 
@@ -162,13 +162,16 @@ def test_plain_mode_is_unchanged(monkeypatch, fake_anthropic, capsys):
 
     call = fake_anthropic.calls[0]
     assert call["output_config"] == {"effort": "low"}
-    assert capsys.readouterr().out == (
-        "Quarantine it and tell your FLM.\n"
-        "\n"
-        "Model: claude-sonnet-5-5 | Thinking: on | Effort: low\n"
-        "Input tokens: 12\n"
-        "Output tokens: 7\n"
-    )
+    assert capsys.readouterr().out == "Quarantine it and tell your FLM.\n"
+
+
+@pytest.mark.parametrize("stream_setting", ["on", "off"])
+def test_json_mode_never_streams(ask_json, fake_anthropic, monkeypatch, stream_setting):
+    monkeypatch.setenv("CLAUDE_STREAM", stream_setting)
+
+    ask_json(json.dumps(VALID_ANSWER))
+
+    assert fake_anthropic.methods == ["create"]
 
 
 def test_structured_answer_round_trips():
