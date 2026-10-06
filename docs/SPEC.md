@@ -50,3 +50,21 @@ To measure:
 - Run with `ANTHROPIC_LOG=info` to see whether the SDK is retrying requests.
 - Check whether the first request with a new schema is slower than later
   ones (the API prepares each new schema once and reuses it for 24 hours).
+
+### JSON answer quality (from the same test)
+- **`safety_alert` too broad:** it was `true` for "What do I do with a damaged
+  pallet?". A damaged empty pallet is not an injury or a dangerous situation
+  in itself. The field description needs a clearer line between a possible
+  hazard and someone being hurt or in danger.
+- **`covered_by_sops` can't say "partly":** the forklift injury question was
+  marked `true`, but only the injury steps are covered; forklifts are not.
+- **Inconsistent section format:** `sources[].section` came back as both
+  "Section 2" and "Section 1 (Reporting)".
+- **Hired-pallet rule applied to all pallets:** one answer said not to
+  dismantle or dispose of any pallet on site. SOP-EQ-01 2.5 limits that to
+  hired pallets.
+
+### Intended behaviour (not an issue)
+- **`escalate_to` is "FLM" for questions the SOPs don't cover.** The system
+  prompt tells users to ask their FLM when the SOPs don't cover a question,
+  so "FLM" is correct by design.
