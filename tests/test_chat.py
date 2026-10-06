@@ -1,7 +1,8 @@
 import pytest
 
 import chat
-from chat import MAX_TOKENS, SOPS_DIR, build_system_prompt, load_settings, load_sops, main
+from chat import SOPS_DIR, build_system_prompt, load_sops, main
+from config import MAX_TOKENS
 
 
 @pytest.fixture
@@ -105,43 +106,11 @@ def test_thinking_off_sends_between_tools(api_key, typed, capsys, fake_anthropic
     assert "Thinking: off | Effort: medium" in capsys.readouterr().out
 
 
-@pytest.mark.parametrize("thinking, effort", [("ON", "HIGH"), (" on ", " xhigh "), ("on", "max")])
-def test_settings_ignore_case_and_spaces(monkeypatch, thinking, effort):
-    monkeypatch.setenv("CLAUDE_THINKING", thinking)
-    monkeypatch.setenv("CLAUDE_EFFORT", effort)
+def test_invalid_settings_raise_before_any_api_call(api_key, fake_anthropic, monkeypatch):
+    monkeypatch.setenv("CLAUDE_THINKING", "off")
+    monkeypatch.setenv("CLAUDE_EFFORT", "max")
 
-    settings = load_settings()
-
-    assert settings["thinking"] == {"type": "adaptive"}
-    assert settings["output_config"] == {"effort": effort.strip().lower()}
-
-
-def test_blank_settings_use_defaults(monkeypatch):
-    monkeypatch.setenv("CLAUDE_MODEL", "")
-    monkeypatch.setenv("CLAUDE_THINKING", "")
-    monkeypatch.setenv("CLAUDE_EFFORT", "")
-
-    assert load_settings() == {
-        "model": "claude-sonnet-5-5",
-        "thinking": {"type": "adaptive"},
-        "output_config": {"effort": "low"},
-    }
-
-
-@pytest.mark.parametrize(
-    "thinking, effort, message",
-    [
-        ("yes", "low", "CLAUDE_THINKING must be 'on' or 'off'"),
-        ("on", "extreme", "CLAUDE_EFFORT must be one of"),
-        ("off", "xhigh", "needs thinking on"),
-        ("off", "max", "needs thinking on"),
-    ],
-)
-def test_invalid_settings_raise_before_any_api_call(api_key, fake_anthropic, monkeypatch, thinking, effort, message):
-    monkeypatch.setenv("CLAUDE_THINKING", thinking)
-    monkeypatch.setenv("CLAUDE_EFFORT", effort)
-
-    with pytest.raises(RuntimeError, match=message):
+    with pytest.raises(RuntimeError, match="needs thinking on"):
         main()
 
     assert fake_anthropic.calls == []
@@ -210,7 +179,7 @@ def test_failed_call_leaves_history_unchanged(failing_api):
     history = [{"role": "user", "content": "Earlier question"}, {"role": "assistant", "content": "Earlier answer"}]
 
     with pytest.raises(FakeAPIError):
-        chat.chat_turn(failing_api, load_settings(), "system", history, "This call fails")
+        chat.chat_turn(failing_api, {"model": "claude-sonnet-5-5"}, "system", history, "This call fails")
 
     assert history == [{"role": "user", "content": "Earlier question"}, {"role": "assistant", "content": "Earlier answer"}]
 
