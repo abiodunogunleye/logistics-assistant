@@ -2,6 +2,7 @@ import sys
 
 from anthropic import Anthropic
 
+from chat import build_system_prompt
 from config import load_config
 
 DEFAULT_QUESTION = "In one sentence, what should a warehouse operative do if they find damaged stock?"
@@ -10,11 +11,13 @@ DEFAULT_QUESTION = "In one sentence, what should a warehouse operative do if the
 def main() -> None:
     config = load_config()
     question = " ".join(sys.argv[1:]) or DEFAULT_QUESTION
+    system = build_system_prompt()
 
     client = Anthropic(api_key=config.api_key)
 
     response = client.messages.create(
         **config.request_params(),
+        system=system,
         messages=[{"role": "user", "content": question}],
     )
 
