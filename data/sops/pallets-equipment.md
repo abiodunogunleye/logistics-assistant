@@ -1,7 +1,7 @@
 # Northbank Logistics — SOP: Pallets & Handling Equipment
 
 **Document ID:** SOP-EQ-01
-**Version:** 1.1
+**Version:** 1.2
 **Owner:** Warehouse Operations
 **Last reviewed:** 2026-10-06
 
@@ -45,12 +45,11 @@ equipment are not covered by this SOP — ask your FLM.
 4. Move it to the designated, clearly signed damaged-pallet area, kept
    separate from good pallets and away from walkways and fire exits.
 5. Keep hired or pooled pallets separate from owned pallets in the
-   damaged-pallet area. Hired pallets belong to the pool company — never
-   dismantle or dispose of them on site.
-6. No pallets are repaired on site. Damaged pallets stay in the
-   damaged-pallet area until they are collected: hired pallets go back to the
-   pool company, and owned pallets are scrapped or collected by a pallet
-   company.
+   damaged-pallet area, because they are collected by different companies.
+6. No pallet, hired or owned, is repaired, dismantled, scrapped, or disposed
+   of on site. All damaged pallets stay in the damaged-pallet area until they
+   are collected: hired pallets by the pool company, and owned pallets by a
+   pallet company for scrap or recycling.
 
 ### 3. Pre-Use Checks on Handling Equipment
 1. Check each pallet truck, stacker, or roll cage at the start of each
