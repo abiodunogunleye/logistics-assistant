@@ -2,7 +2,7 @@ import sys
 
 import pytest
 
-from ask import DEFAULT_MODEL, DEFAULT_QUESTION, main
+from ask import DEFAULT_MODEL, DEFAULT_QUESTION, MAX_TOKENS, main
 
 
 def test_ask_raises_without_api_key(monkeypatch):
@@ -56,3 +56,28 @@ def test_ask_prints_text_and_token_counts(monkeypatch, capsys, fake_anthropic):
     assert "Considering the safest procedure." not in out
     assert "Input tokens: 12" in out
     assert "Output tokens: 7" in out
+    assert "cut off" not in out
+    assert "declined" not in out
+
+
+def test_ask_sends_max_tokens(monkeypatch, fake_anthropic):
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
+    monkeypatch.setattr(sys, "argv", ["ask.py"])
+
+    main()
+
+    assert fake_anthropic.calls[0]["max_tokens"] == MAX_TOKENS == 16000
+
+
+@pytest.mark.parametrize(
+    "stop_reason, message",
+    [("max_tokens", "[Reply cut off at the token limit.]"), ("refusal", "[Claude declined to answer this.]")],
+)
+def test_ask_flags_incomplete_replies(monkeypatch, capsys, fake_anthropic, stop_reason, message):
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
+    monkeypatch.setattr(sys, "argv", ["ask.py"])
+    fake_anthropic.response.stop_reason = stop_reason
+
+    main()
+
+    assert message in capsys.readouterr().out
