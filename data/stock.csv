@@ -1,33 +1,33 @@
-sku,product_name,location,quantity,reorder_level
-NB-1001,Corrugated Carton Small (305x215x150mm),A1-01-1,420,150
-NB-1002,Corrugated Carton Medium (430x300x215mm),A1-02-1,310,150
-NB-1003,Corrugated Carton Large (560x400x370mm),A1-03-1,95,120
-NB-1004,Brown Parcel Tape 48mm x 66m,A1-04-2,600,200
-NB-1005,Clear Parcel Tape 48mm x 66m,A1-04-3,38,100
-NB-1006,Bubble Wrap Roll 500mm x 100m,A1-05-1,54,40
-NB-1007,Void Fill Paper Roll,A1-05-2,210,80
-NB-1008,Pallet Wrap Stretch Film 400mm,A2-01-1,180,60
-NB-1009,Wooden Pallet Standard 1200x1000mm,A2-02-1,340,100
-NB-1010,Half Pallet 1200x600mm,A2-02-2,70,50
-NB-1011,Shipping Label Roll 4x6in (500 labels),A2-03-1,25,50
-NB-1012,Packing Slip Paper A5 (ream),A2-03-2,12,20
-NB-1013,Fragile Warning Sticker Roll,A2-04-1,140,60
-NB-1014,Strapping Tape 19mm x 50m,A2-04-2,88,40
-NB-1015,Pallet Truck Hydraulic Standard,B1-01-1,6,3
-NB-1016,Stacker Truck Battery Pack,B1-01-2,4,2
-NB-1017,Hi-Vis Vest Size L,B1-02-1,65,30
-NB-1018,Hi-Vis Vest Size XL,B1-02-2,22,30
-NB-1019,Safety Boots Size 9,B1-03-1,18,15
-NB-1020,Safety Boots Size 10,B1-03-2,9,15
-NB-1021,Cut-Resistant Gloves Size M,B1-04-1,210,80
-NB-1022,Cut-Resistant Gloves Size L,B1-04-2,175,80
-NB-1023,First Aid Kit Wall-Mounted,B2-01-1,14,10
-NB-1024,Spill Kit Absorbent Pads (pack of 50),B2-01-2,30,25
-NB-1025,Barcode Scanner Handheld RF,B2-02-1,11,6
-NB-1026,Barcode Scanner Charging Dock,B2-02-2,8,6
-NB-1027,Tote Box Stackable 600x400mm,C1-01-1,260,100
-NB-1028,Tote Box Lid 600x400mm,C1-01-2,255,100
-NB-1029,Shelf Location Label Set (100 labels),C1-02-1,16,20
-NB-1030,Cleaning Spray Multi-Surface 750ml,C1-02-2,48,30
-NB-1031,Floor Sweeper Industrial,C1-03-1,3,2
-NB-1032,Recycling Bin 240L Wheeled,C1-03-2,9,5
+sku,product_name,location,quantity,reorder_level,high_value
+NB-1001,Corrugated Carton Small (305x215x150mm),A1-01-1,420,150,no
+NB-1002,Corrugated Carton Medium (430x300x215mm),A1-02-1,310,150,no
+NB-1003,Corrugated Carton Large (560x400x370mm),A1-03-1,95,120,no
+NB-1004,Brown Parcel Tape 48mm x 66m,A1-04-2,600,200,no
+NB-1005,Clear Parcel Tape 48mm x 66m,A1-04-3,38,100,no
+NB-1006,Bubble Wrap Roll 500mm x 100m,A1-05-1,54,40,no
+NB-1007,Void Fill Paper Roll,A1-05-2,210,80,no
+NB-1008,Pallet Wrap Stretch Film 400mm,A2-01-1,180,60,no
+NB-1009,Wooden Pallet Standard 1200x1000mm,A2-02-1,340,100,no
+NB-1010,Half Pallet 1200x600mm,A2-02-2,70,50,no
+NB-1011,Shipping Label Roll 4x6in (500 labels),A2-03-1,25,50,no
+NB-1012,Packing Slip Paper A5 (ream),A2-03-2,12,20,no
+NB-1013,Fragile Warning Sticker Roll,A2-04-1,140,60,no
+NB-1014,Strapping Tape 19mm x 50m,A2-04-2,88,40,no
+NB-1015,Pallet Truck Hydraulic Standard,B1-01-1,6,3,no
+NB-1016,Stacker Truck Battery Pack,B1-01-2,4,2,yes
+NB-1017,Hi-Vis Vest Size L,B1-02-1,65,30,no
+NB-1018,Hi-Vis Vest Size XL,B1-02-2,22,30,no
+NB-1019,Safety Boots Size 9,B1-03-1,18,15,no
+NB-1020,Safety Boots Size 10,B1-03-2,9,15,no
+NB-1021,Cut-Resistant Gloves Size M,B1-04-1,210,80,no
+NB-1022,Cut-Resistant Gloves Size L,B1-04-2,175,80,no
+NB-1023,First Aid Kit Wall-Mounted,B2-01-1,14,10,no
+NB-1024,Spill Kit Absorbent Pads (pack of 50),B2-01-2,30,25,no
+NB-1025,Barcode Scanner Handheld RF,B2-02-1,11,6,yes
+NB-1026,Barcode Scanner Charging Dock,B2-02-2,8,6,no
+NB-1027,Tote Box Stackable 600x400mm,C1-01-1,260,100,no
+NB-1028,Tote Box Lid 600x400mm,C1-01-2,255,100,no
+NB-1029,Shelf Location Label Set (100 labels),C1-02-1,16,20,no
+NB-1030,Cleaning Spray Multi-Surface 750ml,C1-02-2,48,30,no
+NB-1031,Floor Sweeper Industrial,C1-03-1,3,2,yes
+NB-1032,Recycling Bin 240L Wheeled,C1-03-2,9,5,no
