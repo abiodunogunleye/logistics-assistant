@@ -3,6 +3,7 @@ import sys
 import pytest
 
 from ask import DEFAULT_QUESTION, main
+from chat import build_system_prompt
 from config import DEFAULT_MODEL, MAX_TOKENS
 
 
@@ -22,6 +23,18 @@ def test_ask_uses_defaults(monkeypatch, fake_anthropic):
     call = fake_anthropic.calls[0]
     assert call["model"] == DEFAULT_MODEL
     assert call["messages"] == [{"role": "user", "content": DEFAULT_QUESTION}]
+
+
+def test_ask_sends_the_sop_system_prompt(monkeypatch, fake_anthropic):
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
+    monkeypatch.setattr(sys, "argv", ["ask.py", "What", "do", "I", "do", "with", "a", "damaged", "pallet?"])
+
+    main()
+
+    system = fake_anthropic.calls[0]["system"]
+    assert system == build_system_prompt()
+    assert system.startswith("You are the Northbank Logistics Warehouse Assistant.")
+    assert '<sop file="damaged-goods.md">' in system
 
 
 def test_ask_treats_blank_model_as_default(monkeypatch, fake_anthropic):
