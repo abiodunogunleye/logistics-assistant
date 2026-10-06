@@ -25,7 +25,7 @@ def test_load_sops_wraps_every_file_in_sop_tags():
     sops = load_sops()
     files = sorted(path.name for path in SOPS_DIR.glob("*.md"))
 
-    assert len(files) == 6
+    assert len(files) == 7
     assert sops.count("<sop file=") == len(files)
     assert sops.count("</sop>") == len(files)
     for name in files:
@@ -43,7 +43,7 @@ def test_system_prompt_replaces_placeholder_with_sops():
     assert "{SOPS}" not in system
     assert system.startswith("You are the Northbank Logistics Warehouse Assistant.")
     assert "<sops>\n<sop file=" in system
-    for doc_id in ("SOP-DG-01", "SOP-GI-01", "SOP-GO-01", "SOP-IR-01", "SOP-MH-01", "SOP-PE-01"):
+    for doc_id in ("SOP-DG-01", "SOP-EQ-01", "SOP-GI-01", "SOP-GO-01", "SOP-IR-01", "SOP-MH-01", "SOP-PE-01"):
         assert doc_id in system
 
 
