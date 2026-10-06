@@ -1,7 +1,7 @@
 # Northbank Logistics — SOP: Goods-In & Receiving
 
 **Document ID:** SOP-GI-01
-**Version:** 1.1
+**Version:** 1.2
 **Owner:** Warehouse Operations
 **Last reviewed:** 2026-10-06
 
@@ -46,7 +46,7 @@ transfers.
 
 ### 4. Discrepancy Handling
 1. Log any quantity mismatch, wrong SKU, or damaged pallet in the incident
-   system the same shift.
+   system within 15 minutes of discovery.
 2. Hold the rest of the affected pallet in goods-in staging until your FLM
    confirms how to proceed — do not put away stock with an open discrepancy.
    Damaged items do not stay in staging: they go to quarantine per SOP-DG-01.
