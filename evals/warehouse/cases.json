@@ -1,0 +1,311 @@
+[
+  {
+    "id": "single-01",
+    "category": "single_sop",
+    "question": "I've picked the wrong item for an order. What do I do?",
+    "expected_sop_ids": ["SOP-PE-01"],
+    "expected_safety_alert": false,
+    "expected_coverage": "full",
+    "expected_escalate_to": ["none", "FLM"],
+    "key_facts": [
+      "Stop picking that order line",
+      "Log it within 5 minutes",
+      "Return the wrongly picked item to its correct bin",
+      "Re-pick scanning both location and item barcodes",
+      "A second person verifies the correction before the order moves to packing"
+    ]
+  },
+  {
+    "id": "single-02",
+    "category": "single_sop",
+    "question": "How do I label a carton in an order that ships in several boxes?",
+    "expected_sop_ids": ["SOP-GO-01"],
+    "expected_safety_alert": false,
+    "expected_coverage": "full",
+    "expected_escalate_to": "none",
+    "key_facts": [
+      "Generate the label from the order management system only, never hand-written for a live order",
+      "Match the label's order number to the packing slip before applying",
+      "One label per carton, flat on the largest face, no creases over the barcode",
+      "Label each carton 'Box X of Y'"
+    ]
+  },
+  {
+    "id": "single-03",
+    "category": "single_sop",
+    "question": "A delivery has turned up with no matching PO. Can I accept it?",
+    "expected_sop_ids": ["SOP-GI-01"],
+    "expected_safety_alert": false,
+    "expected_coverage": "full",
+    "expected_escalate_to": "FLM",
+    "key_facts": [
+      "No, do not accept a delivery with no matching PO",
+      "Hold it in goods-in staging",
+      "Tell the FLM, who decides whether to accept or reject it"
+    ]
+  },
+  {
+    "id": "single-04",
+    "category": "single_sop",
+    "question": "How do I do the start-of-shift check on a powered pallet truck?",
+    "expected_sop_ids": ["SOP-EQ-01"],
+    "expected_safety_alert": false,
+    "expected_coverage": "full",
+    "expected_escalate_to": "none",
+    "key_facts": [
+      "Check at the start of each shift and record it on the Pre-Use Equipment Checklist",
+      "Forks straight with no cracks or bends",
+      "Wheels and fork rollers present, undamaged and turn freely",
+      "Lifts, holds a load without sinking, and lowers when released",
+      "Handle and controls work and return to neutral",
+      "Powered trucks also: battery charged and charging lead undamaged",
+      "Powered trucks also: brakes, horn and emergency reverse (belly button) work"
+    ]
+  },
+  {
+    "id": "single-05",
+    "category": "single_sop",
+    "question": "What's the correct way to lift a heavy carton?",
+    "expected_sop_ids": ["SOP-MH-01"],
+    "expected_safety_alert": false,
+    "expected_coverage": "full",
+    "expected_escalate_to": "none",
+    "key_facts": [
+      "Check the carton label for weight",
+      "If over 20kg (or it could be) for one person, use a team lift or mechanical aid",
+      "Stand close with feet shoulder-width apart",
+      "Bend at the knees not the back, load close to the body, back straight",
+      "Lift smoothly with no jerking or twisting; turn with your feet"
+    ]
+  },
+  {
+    "id": "single-06",
+    "category": "single_sop",
+    "question": "I've found a crushed carton of packing tape in a pick bin. What do I do with it?",
+    "expected_sop_ids": ["SOP-DG-01"],
+    "expected_safety_alert": false,
+    "expected_coverage": "full",
+    "expected_escalate_to": ["none", "FLM"],
+    "key_facts": [
+      "Remove it from the pick face immediately; never leave it in a live bin",
+      "Move it to the designated damaged-goods quarantine area",
+      "Attach a damaged-goods tag with SKU, quantity, date and who found it",
+      "Log it within 15 minutes, recording SKU, quantity, damage type and where found",
+      "Take a photo where the system supports it"
+    ]
+  },
+  {
+    "id": "multi-01",
+    "category": "multi_sop",
+    "question": "I've found a damaged carton on a pallet while unloading a delivery. What happens to it and to the rest of the pallet?",
+    "expected_sop_ids": ["SOP-GI-01", "SOP-DG-01"],
+    "expected_safety_alert": false,
+    "expected_coverage": "full",
+    "expected_escalate_to": "FLM",
+    "key_facts": [
+      "Only the damaged item goes to the damaged-goods quarantine area, with a tag",
+      "The rest of the pallet is held in goods-in staging",
+      "None of the pallet is put away until the discrepancy is resolved",
+      "Log it within 15 minutes",
+      "The FLM confirms how to proceed"
+    ]
+  },
+  {
+    "id": "multi-02",
+    "category": "multi_sop",
+    "question": "I'm packing an order and one of the items is damaged. What should I do?",
+    "expected_sop_ids": ["SOP-GO-01", "SOP-DG-01"],
+    "expected_safety_alert": false,
+    "expected_coverage": "full",
+    "expected_escalate_to": ["none", "FLM"],
+    "key_facts": [
+      "Do not pack damaged stock; remove it",
+      "Follow the damaged-goods process: quarantine with a tag",
+      "Log it within 15 minutes",
+      "Tell the FLM straight away if the item is high-value or more than one unit of the same batch is damaged"
+    ]
+  },
+  {
+    "id": "multi-03",
+    "category": "multi_sop",
+    "question": "The forks on my pallet truck are bent. What do I do and who needs to know?",
+    "expected_sop_ids": ["SOP-EQ-01", "SOP-IR-01"],
+    "expected_safety_alert": false,
+    "expected_coverage": "full",
+    "expected_escalate_to": "FLM",
+    "key_facts": [
+      "Stop using it straight away and do not work around the fault",
+      "Park it safely: forks fully lowered, out of aisles, clear of fire exits",
+      "Attach a 'Do Not Use — Faulty' tag with the fault, date and who found it",
+      "Never repair it yourself; maintenance does repairs",
+      "Tell the FLM straight away and log it the same shift",
+      "The FLM reports to maintenance and escalates to the Senior FLM the same shift"
+    ]
+  },
+  {
+    "id": "multi-04",
+    "category": "multi_sop",
+    "question": "I'm an FLM. We keep getting damaged pallets and damaged goods from the same supplier. What should happen?",
+    "expected_sop_ids": ["SOP-EQ-01", "SOP-DG-01"],
+    "expected_safety_alert": false,
+    "expected_coverage": "full",
+    "expected_escalate_to": "Senior FLM",
+    "key_facts": [
+      "The FLM raises the repeated problem with the Senior FLM",
+      "The Senior FLM follows up with the supplier",
+      "The Senior FLM informs the Shift Manager",
+      "Individual incidents are still logged, recording the supplier for pallets that arrived with a delivery"
+    ]
+  },
+  {
+    "id": "safety-01",
+    "category": "safety_injury",
+    "question": "Someone's just been hit by a forklift.",
+    "expected_sop_ids": ["SOP-IR-01"],
+    "expected_safety_alert": true,
+    "expected_coverage": "partial",
+    "expected_escalate_to": "FLM",
+    "key_facts": [
+      "Stop and make the area safe; alert the FLM or a first aider immediately, before anything else",
+      "The FLM informs the Shift Manager straight away for an injury needing medical attention",
+      "Do not wait for the end-of-shift review",
+      "Log the incident, recording whether first aid was given and by whom",
+      "Forklift-specific procedures are not in the SOPs and must not be invented"
+    ]
+  },
+  {
+    "id": "safety-02",
+    "category": "safety_injury",
+    "question": "I've twinged my back lifting a carton but it's only minor. Do I need to report it?",
+    "expected_sop_ids": ["SOP-MH-01", "SOP-IR-01"],
+    "expected_safety_alert": true,
+    "expected_coverage": "full",
+    "expected_escalate_to": "FLM",
+    "key_facts": [
+      "Yes, report any strain, pain or injury however minor",
+      "Tell the FLM or a first aider immediately, and make sure the FLM knows even if a first aider dealt with it",
+      "Log it the same shift",
+      "Do not continue manual handling duties until cleared by the FLM"
+    ]
+  },
+  {
+    "id": "safety-03",
+    "category": "safety_injury",
+    "question": "A pallet of liquid chemicals has leaked across the aisle.",
+    "expected_sop_ids": ["SOP-IR-01"],
+    "expected_safety_alert": true,
+    "expected_coverage": "partial",
+    "expected_escalate_to": "FLM",
+    "key_facts": [
+      "Make the area safe first: cordon off the spill and clear people",
+      "Notify the FLM immediately",
+      "The FLM informs the Shift Manager straight away for a chemical spill",
+      "Log the incident",
+      "No spill clean-up method is in the SOPs, so none should be invented"
+    ]
+  },
+  {
+    "id": "none-01",
+    "category": "not_covered",
+    "question": "What's the process for booking holiday?",
+    "expected_sop_ids": [],
+    "expected_safety_alert": false,
+    "expected_coverage": "none",
+    "expected_escalate_to": "FLM",
+    "key_facts": [
+      "States plainly that the SOPs do not cover holiday booking",
+      "Tells the user to ask their FLM",
+      "Does not invent a holiday process"
+    ]
+  },
+  {
+    "id": "none-02",
+    "category": "not_covered",
+    "question": "What's the pre-use check for a forklift?",
+    "expected_sop_ids": [],
+    "expected_safety_alert": false,
+    "expected_coverage": "none",
+    "expected_escalate_to": "FLM",
+    "key_facts": [
+      "SOP-EQ-01 explicitly does not cover forklifts; the user should ask their FLM",
+      "Does not present the pallet truck or stacker checklist as the forklift check",
+      "Does not invent a forklift check"
+    ]
+  },
+  {
+    "id": "none-03",
+    "category": "not_covered",
+    "question": "How do I process a return from a customer?",
+    "expected_sop_ids": [],
+    "expected_safety_alert": false,
+    "expected_coverage": "none",
+    "expected_escalate_to": "FLM",
+    "key_facts": [
+      "States that no SOP covers customer returns (SOP-GI-01 covers supplier deliveries and inter-site transfers only)",
+      "Tells the user to ask their FLM",
+      "Does not adapt the goods-in steps into a returns process"
+    ]
+  },
+  {
+    "id": "escalate-01",
+    "category": "followup_escalation",
+    "question": "I need to report a large discrepancy on a delivery but my FLM isn't on shift. Who do I go to?",
+    "expected_sop_ids": ["SOP-GI-01"],
+    "expected_safety_alert": false,
+    "expected_coverage": "full",
+    "expected_escalate_to": "Senior FLM",
+    "key_facts": [
+      "If the FLM is unavailable, go to the Senior FLM",
+      "A large discrepancy is more than 5% of the expected quantity or more than 10 units",
+      "The Senior FLM must be informed before the delivery vehicle leaves site",
+      "Log the discrepancy within 15 minutes",
+      "Hold the rest of the affected pallet in goods-in staging"
+    ]
+  },
+  {
+    "id": "escalate-02",
+    "category": "followup_escalation",
+    "question": "I'm an FLM and I want to write off a damaged high-value item. Who has to approve it?",
+    "expected_sop_ids": ["SOP-DG-01"],
+    "expected_safety_alert": false,
+    "expected_coverage": "full",
+    "expected_escalate_to": "Senior FLM",
+    "key_facts": [
+      "Write-offs of high-value items need Senior FLM approval before stock records change",
+      "High-value means a unit value over £500",
+      "Update stock records the same day to remove the written-off quantity",
+      "Supplier-fault damage is filed against the relevant PO for recharge or replacement"
+    ]
+  },
+  {
+    "id": "edge-01",
+    "category": "edge_case",
+    "question": "We've got a damaged hired pallet. Can I get it repaired or scrap it on site, and where does it go?",
+    "expected_sop_ids": ["SOP-EQ-01"],
+    "expected_safety_alert": false,
+    "expected_coverage": "full",
+    "expected_escalate_to": "FLM",
+    "key_facts": [
+      "No pallet, hired or owned, is repaired, dismantled, scrapped or disposed of on site",
+      "Attach a 'Do Not Use — Damaged' tag with the defect, date and who found it",
+      "Move it to the designated damaged-pallet area, kept separate from owned pallets",
+      "Hired or pooled pallets are collected by the pool company",
+      "Log it the same shift and tell the FLM straight away"
+    ]
+  },
+  {
+    "id": "edge-02",
+    "category": "edge_case",
+    "question": "A delivery is 8 units short on an order of 200. Is that a large discrepancy?",
+    "expected_sop_ids": ["SOP-GI-01", "SOP-IR-01"],
+    "expected_safety_alert": false,
+    "expected_coverage": "full",
+    "expected_escalate_to": "FLM",
+    "key_facts": [
+      "No: 8 of 200 is 4%, under the 5% threshold, and 8 is not more than 10 units",
+      "It is still a discrepancy: log it within 15 minutes",
+      "Hold the rest of the pallet in goods-in staging until the FLM confirms how to proceed",
+      "Not an automatic Senior FLM escalation (that is for repeated or high-value discrepancies)"
+    ]
+  }
+]
