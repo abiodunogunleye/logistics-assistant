@@ -1,4 +1,6 @@
 {
-  "claude-sonnet-5-5": {"input_per_mtok": null, "output_per_mtok": null},
-  "claude-opus-5-5": {"input_per_mtok": null, "output_per_mtok": null}
+  "_checked": "2026-10-22",
+  "_source": "Anthropic pricing page",
+  "claude-sonnet-5-5": {"input_per_mtok": 2, "output_per_mtok": 10},
+  "claude-opus-5-5": {"input_per_mtok": 4, "output_per_mtok": 20}
 }
