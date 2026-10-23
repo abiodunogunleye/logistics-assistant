@@ -101,6 +101,14 @@ All four findings below are fixed or resolved. Confirmed with real
   plainly. The system prompt also now tells Claude to apply a rule only to
   the items it covers.
 
+### Eval grader has no "allowed extra citations" setting
+`expected_sop_ids` means "these SOPs must all be cited", and extra citations
+are tolerated. An empty list means "cite nothing". There is nothing in
+between, such as "may cite these, but nothing else". So unrelated extra SOP
+citations are caught only by the judge, not by the code checks. Seen in
+`none-02` (2026-10-23), where citing SOP-MH-01 was fine, so the case now
+requires only SOP-EQ-01.
+
 ### Intended behaviour (not an issue)
 - **`escalate_to` is "FLM" for questions the SOPs don't cover.** The system
   prompt tells users to ask their FLM when the SOPs don't cover a question,
