@@ -57,6 +57,7 @@ class Env:
         self.results = tmp_path / "results"
         self.asked, self.assistant_calls, self.client = [], [], FakeJudgeClient()
         self.stdout = json.dumps(GOOD_ANSWER)
+        self.returncodes = []
         self.clients_made = 0
 
     def set_prices(self, prices):
@@ -64,6 +65,10 @@ class Env:
 
     def _assistant(self, question):
         self.assistant_calls.append(question)
+        code = self.returncodes[len(self.assistant_calls) - 1] if self.returncodes else 0
+        if code:
+            return {"stdout": "", "stderr": "Traceback\nAuthenticationError: 401 invalid x-api-key", "returncode": code,
+                    "seconds": 1.5, "input_tokens": 0, "output_tokens": 0, "error": None}
         return {"stdout": self.stdout, "stderr": "", "returncode": 0, "seconds": 1.5,
                 "input_tokens": 1000, "output_tokens": 100, "error": None}
 
@@ -170,6 +175,34 @@ def test_wrong_fields_fail_the_case_even_with_a_high_judge_score(env):
     assert not result["passed"]
     assert [c["name"] for c in result["checks"] if not c["passed"]] == ["coverage"]
     assert result["judge_score"] == 9
+
+
+def test_stops_after_three_failed_calls_in_a_row_and_saves_nothing(tmp_path, capsys):
+    env = Env(tmp_path, [case(f"c{n}") for n in range(1, 6)])
+    env.returncodes = [1, 1, 1, 0, 0]
+
+    assert env.run() == 3
+
+    assert len(env.assistant_calls) == 3
+    assert env.client.calls == [] and not env.results.exists()
+    err = capsys.readouterr().err
+    assert "Stopped after 3 failed assistant calls in a row" in err and "invalid x-api-key" in err
+
+
+def test_failures_that_are_not_in_a_row_do_not_stop_the_run(tmp_path):
+    env = Env(tmp_path, [case(f"c{n}") for n in range(1, 7)])
+    env.returncodes = [1, 1, 0, 1, 1, 0]
+
+    assert env.run() == 0
+    assert len(env.assistant_calls) == 6 and env.saved()[1]["summary"]["overall"]["passed"] == 2
+
+
+def test_bad_answers_with_a_clean_exit_do_not_trigger_the_stop(tmp_path):
+    env = Env(tmp_path, [case(f"c{n}") for n in range(1, 5)])
+    env.stdout = "not json"
+
+    assert env.run() == 0
+    assert len(env.assistant_calls) == 4
 
 
 def test_only_runs_the_chosen_cases(env):

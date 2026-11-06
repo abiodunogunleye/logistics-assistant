@@ -26,6 +26,7 @@ import scoring
 HERE = Path(__file__).parent
 TIMEOUT_SECONDS = 300
 SNIPPET_CHARS = 500
+MAX_CONSECUTIVE_FAILURES = 3
 INPUT_TOKENS = re.compile(r"Input tokens:\s*(\d+)")
 OUTPUT_TOKENS = re.compile(r"Output tokens:\s*(\d+)")
 
@@ -73,6 +74,16 @@ def evaluate_case(case: dict, run_assistant, client, judge_model: str, system: l
         "judge_input_tokens": judgement.input_tokens if judgement else 0,
         "judge_output_tokens": judgement.output_tokens if judgement else 0,
     }
+
+
+def call_failed(result: dict) -> bool:
+    """The assistant command itself failed (non-zero exit or timeout), as opposed to giving a bad answer."""
+    return bool(result["assistant"]["error"]) or result["assistant"]["returncode"] != 0
+
+
+def last_error_line(result: dict) -> str:
+    lines = (result["assistant"]["stderr_snippet"] or "").strip().splitlines()
+    return lines[-1] if lines else (result["assistant"]["error"] or "no error output")
 
 
 def git_sha() -> str | None:
@@ -158,10 +169,15 @@ def main(argv=None, *, run_assistant=None, client_factory=default_client, input_
 
     run_assistant = run_assistant or partial(run_command, args.cmd, timeout=args.timeout)
     client, system, started = client_factory(), judge.build_system(rubric, context), now()
-    results = []
+    results, failed_in_a_row = [], 0
     for number, case in enumerate(cases, start=1):
         print(f"[{number}/{len(cases)}] {case['id']} ...", flush=True)
         results.append(evaluate_case(case, run_assistant, client, args.judge_model, system))
+        failed_in_a_row = failed_in_a_row + 1 if call_failed(results[-1]) else 0
+        if failed_in_a_row >= MAX_CONSECUTIVE_FAILURES:
+            print(f"\nStopped after {failed_in_a_row} failed assistant calls in a row; nothing saved. "
+                  f"Last error: {last_error_line(results[-1])}", file=sys.stderr)
+            return 3
 
     summary = scoring.summarize(results)
     total = summary["overall"]
