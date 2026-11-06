@@ -1,0 +1,1932 @@
+{
+  "suite": "warehouse",
+  "regrade": {
+    "of": "2026-11-06T125147_warehouse.json",
+    "no_api_calls": true,
+    "what": "Code checks recomputed against the current cases.json; assistant answers and judge scores are the saved ones from the original run.",
+    "cases_commit": "dbf7cc2",
+    "changes": [
+      "single-04: passed False -> True, score 9.0 -> 10.0",
+      "edge-02: passed False -> True, score 8.5 -> 9.5"
+    ]
+  },
+  "started_at": "2026-11-06T12:51:47",
+  "config": {
+    "assistant_model": "claude-sonnet-5-5",
+    "judge_model": "claude-opus-5-5",
+    "cmd": "{python} src/ask.py --json {question}",
+    "claude_env": {
+      "CLAUDE_CODE_SSE_PORT": "34364"
+    },
+    "git_sha": "b75dde5"
+  },
+  "estimate": {
+    "cases": 20,
+    "tokens": {
+      "assistant_input": 164820,
+      "assistant_output": 12000,
+      "judge_input": 203436,
+      "judge_output": 7200
+    },
+    "usd": {
+      "assistant": 0.44964,
+      "judge": 0.957744,
+      "total": 1.407384
+    }
+  },
+  "summary": {
+    "overall": {
+      "cases": 20,
+      "passed": 20,
+      "mean_score": 9.78,
+      "mean_code_score": 10.0,
+      "mean_judge_score": 9.55,
+      "total_seconds": 202.91,
+      "total_assistant_input_tokens": 226376,
+      "total_assistant_output_tokens": 9086,
+      "total_judge_input_tokens": 232449,
+      "total_judge_output_tokens": 4463
+    },
+    "by_category": {
+      "edge_case": {
+        "cases": 2,
+        "passed": 2,
+        "mean_score": 9.75,
+        "mean_code_score": 10.0,
+        "mean_judge_score": 9.5,
+        "total_seconds": 21.68,
+        "total_assistant_input_tokens": 22653,
+        "total_assistant_output_tokens": 982,
+        "total_judge_input_tokens": 23404,
+        "total_judge_output_tokens": 466
+      },
+      "followup_escalation": {
+        "cases": 2,
+        "passed": 2,
+        "mean_score": 9.5,
+        "mean_code_score": 10.0,
+        "mean_judge_score": 9.0,
+        "total_seconds": 22.01,
+        "total_assistant_input_tokens": 22655,
+        "total_assistant_output_tokens": 861,
+        "total_judge_input_tokens": 23207,
+        "total_judge_output_tokens": 446
+      },
+      "multi_sop": {
+        "cases": 4,
+        "passed": 4,
+        "mean_score": 9.88,
+        "mean_code_score": 10.0,
+        "mean_judge_score": 9.75,
+        "total_seconds": 42.81,
+        "total_assistant_input_tokens": 45303,
+        "total_assistant_output_tokens": 2548,
+        "total_judge_input_tokens": 47388,
+        "total_judge_output_tokens": 862
+      },
+      "not_covered": {
+        "cases": 3,
+        "passed": 3,
+        "mean_score": 9.67,
+        "mean_code_score": 10.0,
+        "mean_judge_score": 9.33,
+        "total_seconds": 30.7,
+        "total_assistant_input_tokens": 33921,
+        "total_assistant_output_tokens": 506,
+        "total_judge_input_tokens": 33719,
+        "total_judge_output_tokens": 902
+      },
+      "safety_injury": {
+        "cases": 3,
+        "passed": 3,
+        "mean_score": 9.5,
+        "mean_code_score": 10.0,
+        "mean_judge_score": 9.0,
+        "total_seconds": 27.49,
+        "total_assistant_input_tokens": 33949,
+        "total_assistant_output_tokens": 1385,
+        "total_judge_input_tokens": 34896,
+        "total_judge_output_tokens": 918
+      },
+      "single_sop": {
+        "cases": 6,
+        "passed": 6,
+        "mean_score": 10.0,
+        "mean_code_score": 10.0,
+        "mean_judge_score": 10.0,
+        "total_seconds": 58.22,
+        "total_assistant_input_tokens": 67895,
+        "total_assistant_output_tokens": 2804,
+        "total_judge_input_tokens": 69835,
+        "total_judge_output_tokens": 869
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "single-01",
+      "category": "single_sop",
+      "question": "I've picked the wrong item for an order. What do I do?",
+      "passed": true,
+      "case_score": 10.0,
+      "code_score": 10.0,
+      "judge_score": 10,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited; also cited ['SOP-IR-01', 'SOP-GO-01']"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'full', accepted ['full']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'FLM', accepted ['none', 'FLM']"
+        }
+      ],
+      "judge": {
+        "score": 10,
+        "reason": "Fully correct: every key fact is covered (stop, log within 5 minutes, return to correct bin, re-pick with both scans, second-person verification before packing), and the FLM escalation triggers match SOP-PE-01. Nothing is invented and nothing is unsafe.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11667,
+        "output_tokens": 122,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "Stop picking that order line, log the error within 5 minutes, put the wrong item back, re-pick correctly and get the correction checked. Tell your FLM straight away if the item is safety-critical or high-value (over £500), or the carton is already sealed.",
+          "steps": [
+            "Stop picking that order line as soon as you spot the error. Don't quietly fix and carry on.",
+            "Note the order number, SKU expected, SKU/quantity found and bin location.",
+            "Log the error in the incident system (or paper incident log if the system is down) within 5 minutes.",
+            "Tell your FLM straight away if it involves a safety-critical item, a high-value item (unit value over £500), or a carton already sealed.",
+            "Return the wrongly picked item to its correct bin. Don't leave it in the tote or on the pack bench.",
+            "Re-pick the correct SKU and quantity, scanning both the location and item barcodes.",
+            "If the carton is already sealed, open it, correct the contents, and re-label if the carton was marked.",
+            "Get your FLM or a buddy picker to verify the correction before the order goes to packing.",
+            "Update the incident log with how it was corrected and who verified it."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-PE-01",
+              "section": "1"
+            },
+            {
+              "sop_id": "SOP-PE-01",
+              "section": "2"
+            },
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "Definitions"
+            },
+            {
+              "sop_id": "SOP-GO-01",
+              "section": "1.3"
+            }
+          ],
+          "coverage": "full",
+          "safety_alert": false,
+          "escalate_to": "FLM",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 11.0,
+      "assistant_input_tokens": 11313,
+      "assistant_output_tokens": 513,
+      "judge_input_tokens": 11667,
+      "judge_output_tokens": 122
+    },
+    {
+      "id": "single-02",
+      "category": "single_sop",
+      "question": "How do I label a carton in an order that ships in several boxes?",
+      "passed": true,
+      "case_score": 10.0,
+      "code_score": 10.0,
+      "judge_score": 10,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'full', accepted ['full']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'none', accepted ['none']"
+        }
+      ],
+      "judge": {
+        "score": 10,
+        "reason": "All four key facts from SOP-GO-01 Section 3 are present and accurate. The extra detail on packing slips (2.4) and failed label checks (4.4) is correct and drawn from the SOP.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11593,
+        "output_tokens": 99,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "For a multi-carton order, label each carton 'Box X of Y' (for example 'Box 2 of 3'). Labels must come from the order management system, never hand-written.",
+          "steps": [
+            "Generate the shipping label from the order management system only. Never hand-write a label for a live order.",
+            "Match the label's order number to the packing slip inside the carton before applying it.",
+            "Apply one label per carton, flat on the largest face, with no creases over the barcode.",
+            "Mark each carton 'Box X of Y' (e.g. 'Box 1 of 3', 'Box 2 of 3').",
+            "Make sure every carton has a packing slip inside it.",
+            "If a carton fails a label or packing-slip check, do not load it. Set it aside and tell your FLM."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-GO-01",
+              "section": "3.1"
+            },
+            {
+              "sop_id": "SOP-GO-01",
+              "section": "3.2"
+            },
+            {
+              "sop_id": "SOP-GO-01",
+              "section": "3.3"
+            },
+            {
+              "sop_id": "SOP-GO-01",
+              "section": "3.4"
+            },
+            {
+              "sop_id": "SOP-GO-01",
+              "section": "2.4"
+            },
+            {
+              "sop_id": "SOP-GO-01",
+              "section": "4.4"
+            }
+          ],
+          "coverage": "full",
+          "safety_alert": false,
+          "escalate_to": "none",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 9.07,
+      "assistant_input_tokens": 11314,
+      "assistant_output_tokens": 433,
+      "judge_input_tokens": 11593,
+      "judge_output_tokens": 99
+    },
+    {
+      "id": "single-03",
+      "category": "single_sop",
+      "question": "A delivery has turned up with no matching PO. Can I accept it?",
+      "passed": true,
+      "case_score": 10.0,
+      "code_score": 10.0,
+      "judge_score": 10,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'full', accepted ['full']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'FLM', accepted ['FLM']"
+        }
+      ],
+      "judge": {
+        "score": 10,
+        "reason": "Fully correct: covers not accepting, holding in goods-in staging, and telling the FLM who decides, with accurate Senior FLM fallback from the SOP.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11323,
+        "output_tokens": 86,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "No. Do not accept a delivery with no matching PO. Hold it in goods-in staging and tell your FLM, who decides whether to accept or reject it.",
+          "steps": [
+            "Do not accept the delivery.",
+            "Hold it in the goods-in staging area.",
+            "Tell your FLM, who decides whether to accept or reject it.",
+            "If your FLM is unavailable, go to the Senior FLM."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-GI-01",
+              "section": "2.4"
+            },
+            {
+              "sop_id": "SOP-GI-01",
+              "section": "Reporting / Escalation"
+            }
+          ],
+          "coverage": "full",
+          "safety_alert": false,
+          "escalate_to": "FLM",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 7.66,
+      "assistant_input_tokens": 11317,
+      "assistant_output_tokens": 230,
+      "judge_input_tokens": 11323,
+      "judge_output_tokens": 86
+    },
+    {
+      "id": "single-04",
+      "category": "single_sop",
+      "question": "How do I do the start-of-shift check on a powered pallet truck?",
+      "passed": true,
+      "case_score": 10.0,
+      "code_score": 10.0,
+      "judge_score": 10,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'full', accepted ['full']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'FLM', accepted ['none', 'FLM']"
+        }
+      ],
+      "judge": {
+        "score": 10,
+        "reason": "Fully correct: every pallet truck and powered-truck check is listed, the Pre-Use Equipment Checklist is recorded, and the failed-check handling matches SOP-EQ-01 Section 4 with nothing invented or unsafe.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11800,
+        "output_tokens": 113,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "Check the truck at the start of each shift and record it on the Pre-Use Equipment Checklist (paper or handheld). A powered pallet truck needs the standard pallet truck checks plus the extra powered checks. You must be trained and signed off on the equipment to use it unsupervised.",
+          "steps": [
+            "Check the forks are straight, with no cracks or bends.",
+            "Check the wheels and fork rollers are present, undamaged and turn freely.",
+            "Check the truck lifts, holds a load without sinking, and lowers when released.",
+            "Check the handle and controls work and return to neutral.",
+            "Check the battery is charged and the charging lead is undamaged.",
+            "Check the brakes, horn and emergency reverse (belly button) work.",
+            "Record the check on the Pre-Use Equipment Checklist.",
+            "If any check fails, stop using the truck, park it safely with forks fully lowered and out of aisles and fire exits, switch it off and remove the key, tag it 'Do Not Use — Faulty' (fault, date, who found it), and tell your FLM straight away. Do not repair it yourself."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "3.1"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "3.2"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "3.4"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "3.6"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "4"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "5.1"
+            }
+          ],
+          "coverage": "full",
+          "safety_alert": false,
+          "escalate_to": "FLM",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 10.93,
+      "assistant_input_tokens": 11317,
+      "assistant_output_tokens": 551,
+      "judge_input_tokens": 11800,
+      "judge_output_tokens": 113
+    },
+    {
+      "id": "single-05",
+      "category": "single_sop",
+      "question": "What's the correct way to lift a heavy carton?",
+      "passed": true,
+      "case_score": 10.0,
+      "code_score": 10.0,
+      "judge_score": 10,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'full', accepted ['full']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'none', accepted ['none']"
+        }
+      ],
+      "judge": {
+        "score": 10,
+        "reason": "Fully correct: every key fact from SOP-MH-01 is present (label weight check, the 20kg team lift or aid rule, stance, bending at the knees, smooth lift turning with the feet). The team lift and injury reporting details are accurate.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11685,
+        "output_tokens": 226,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "Check the load first, use a team lift or aid if it is or looks over 20kg, then lift with your knees and keep the load close. If you strain or hurt yourself, report it to your FLM or a first aider immediately.",
+          "steps": [
+            "Assess the carton's weight, size and shape before lifting. Check the label for weight where marked.",
+            "If it is, or looks like it could be, over 20kg for one person, use a team lift or mechanical aid (trolley, pallet truck or hoist) instead.",
+            "Clear the path of trip hazards and make sure there is space to set the load down at the destination.",
+            "Stand close to the load with feet shoulder-width apart.",
+            "Bend at the knees, not the back, and keep the load close to your body.",
+            "Get a secure grip, keep your back straight, and lift smoothly. Do not jerk or twist. Turn with your feet, not your spine.",
+            "For a team lift, agree who is calling the lift, then lift, move and set down together on the caller's count.",
+            "If you feel any strain, pain or injury, however minor, stop and tell your FLM or a first aider immediately, and log it per SOP-IR-01. Do not carry on manual handling until your FLM clears you."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-MH-01",
+              "section": "1"
+            },
+            {
+              "sop_id": "SOP-MH-01",
+              "section": "2"
+            },
+            {
+              "sop_id": "SOP-MH-01",
+              "section": "3"
+            },
+            {
+              "sop_id": "SOP-MH-01",
+              "section": "5"
+            }
+          ],
+          "coverage": "full",
+          "safety_alert": false,
+          "escalate_to": "none",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 9.46,
+      "assistant_input_tokens": 11311,
+      "assistant_output_tokens": 516,
+      "judge_input_tokens": 11685,
+      "judge_output_tokens": 226
+    },
+    {
+      "id": "single-06",
+      "category": "single_sop",
+      "question": "I've found a crushed carton of packing tape in a pick bin. What do I do with it?",
+      "passed": true,
+      "case_score": 10.0,
+      "code_score": 10.0,
+      "judge_score": 10,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited; also cited ['SOP-IR-01']"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'full', accepted ['full']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'none', accepted ['none', 'FLM']"
+        }
+      ],
+      "judge": {
+        "score": 10,
+        "reason": "The answer is fully correct. It covers immediate removal from the pick bin, quarantine, tagging with SKU, quantity, date and finder, logging within 15 minutes with the required details and a photo where supported, and the correct triggers for telling the FLM, with nothing invented or unsafe.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11767,
+        "output_tokens": 223,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "A crushed carton counts as damaged until inspected, even if the contents look fine. Take it out of the pick bin, quarantine it, tag it and log it. Packing tape is not high-value or safety-critical unless the stock list says otherwise, so only tell your FLM straight away if it is high-value (over £500 per unit) or more than one unit of the same batch is damaged. If unsure, treat it as damaged and ask your FLM.",
+          "steps": [
+            "Treat the crushed carton as damaged and remove it from the pick bin straight away.",
+            "Move it to the damaged-goods quarantine area. Never leave it in a live bin or on the pack bench.",
+            "Attach a damaged-goods tag with the SKU, quantity, date and who found it.",
+            "Log it in the incident system (or paper log if the system is down) within 15 minutes of finding it. Record SKU, quantity, damage type and where it was found, and add a photo if the system allows.",
+            "Tell your FLM straight away if it is a high-value item or if more than one unit of the same batch is damaged.",
+            "Your FLM decides whether it is written off, returned to supplier or downgraded for internal use."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "1.1"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "1.3"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "2"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "3"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "4.1"
+            },
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "Definitions"
+            }
+          ],
+          "coverage": "full",
+          "safety_alert": false,
+          "escalate_to": "none",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 10.1,
+      "assistant_input_tokens": 11323,
+      "assistant_output_tokens": 561,
+      "judge_input_tokens": 11767,
+      "judge_output_tokens": 223
+    },
+    {
+      "id": "multi-01",
+      "category": "multi_sop",
+      "question": "I've found a damaged carton on a pallet while unloading a delivery. What happens to it and to the rest of the pallet?",
+      "passed": true,
+      "case_score": 10.0,
+      "code_score": 10.0,
+      "judge_score": 10,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'full', accepted ['full']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'FLM', accepted ['FLM']"
+        }
+      ],
+      "judge": {
+        "score": 10,
+        "reason": "Fully correct: only the damaged carton goes to quarantine with a tag, and the rest of the pallet is held in goods-in staging with nothing put away until the FLM confirms. It is logged within 15 minutes, and the escalation thresholds match the SOPs.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11931,
+        "output_tokens": 202,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "The damaged carton goes to the damaged-goods quarantine area. The rest of the pallet is held in goods-in staging until your FLM confirms how to proceed. Do not put any of it away while the discrepancy is open.",
+          "steps": [
+            "Move the damaged carton to the damaged-goods quarantine area straight away. Do not leave it in goods-in staging, a live bin or on the pack bench.",
+            "Attach a damaged-goods tag stating SKU, quantity, date and who found it.",
+            "Hold the rest of the pallet in goods-in staging. Do not put any of it away until your FLM confirms how to proceed.",
+            "Log the damage in the incident system (or paper log if the system is down) within 15 minutes of discovery. Record SKU, quantity, damage type and where it was found, and add a photo if the system allows.",
+            "Tell your FLM. Do this straight away if the item is high-value (over £500) or more than one unit of the same batch is damaged.",
+            "If the damage affects food safety or chemical containment, tell your FLM immediately, not at end of shift. The FLM informs the Shift Manager straight away."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-GI-01",
+              "section": "3.2"
+            },
+            {
+              "sop_id": "SOP-GI-01",
+              "section": "4.1"
+            },
+            {
+              "sop_id": "SOP-GI-01",
+              "section": "4.2"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "2.2"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "2.3"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "2.4"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "3.1"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "3.2"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "3.3"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "3.4"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "Reporting / Escalation"
+            }
+          ],
+          "coverage": "full",
+          "safety_alert": false,
+          "escalate_to": "FLM",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 10.22,
+      "assistant_input_tokens": 11334,
+      "assistant_output_tokens": 687,
+      "judge_input_tokens": 11931,
+      "judge_output_tokens": 202
+    },
+    {
+      "id": "multi-02",
+      "category": "multi_sop",
+      "question": "I'm packing an order and one of the items is damaged. What should I do?",
+      "passed": true,
+      "case_score": 9.5,
+      "code_score": 10.0,
+      "judge_score": 9,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited; also cited ['SOP-IR-01']"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'full', accepted ['full']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'FLM', accepted ['none', 'FLM']"
+        }
+      ],
+      "judge": {
+        "score": 9,
+        "reason": "All key facts are present and correctly sourced: don't pack it, quarantine with a tag, log within 15 minutes, and tell the FLM straight away for high-value items or multi-unit batch damage. The food/chemical trigger is slightly broader than the SOP's 'damage affecting food safety or chemical containment', but this errs on the safe side.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11836,
+        "output_tokens": 288,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "Do not pack the damaged item. Take it out of the order and handle it under the Damaged Goods procedure before carrying on packing.",
+          "steps": [
+            "Stop and remove the damaged item from the order - do not pack it (SOP-GO-01 Section 2.5).",
+            "Remove it from the pack bench and move it straight to the damaged-goods quarantine area - never leave it on the pack bench or in a live bin (SOP-DG-01 Section 2.1-2.2).",
+            "Attach a damaged-goods tag with SKU, quantity, date and who found it (SOP-DG-01 Section 2.4).",
+            "Log the damage in the incident system (or paper log if the system is down) within 15 minutes, recording SKU, quantity, damage type and where it was found. Add a photo if the system allows (SOP-DG-01 Section 3.1-3.3).",
+            "Tell your FLM straight away if the item is high-value (over £500), if more than one unit of the same batch is damaged, or if it is food or chemical stock (SOP-DG-01 Section 3.4 and Reporting / Escalation; high-value definition in SOP-IR-01 Definitions).",
+            "Leave it to your FLM to decide whether the item is written off, returned to supplier or downgraded (SOP-DG-01 Section 4.1)."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-GO-01",
+              "section": "2.5"
+            },
+            {
+              "sop_id": "SOP-GO-01",
+              "section": "Reporting / Escalation"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "2"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "3"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "4.1"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "Reporting / Escalation"
+            },
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "Definitions"
+            }
+          ],
+          "coverage": "full",
+          "safety_alert": false,
+          "escalate_to": "FLM",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 11.54,
+      "assistant_input_tokens": 11317,
+      "assistant_output_tokens": 657,
+      "judge_input_tokens": 11836,
+      "judge_output_tokens": 288
+    },
+    {
+      "id": "multi-03",
+      "category": "multi_sop",
+      "question": "The forks on my pallet truck are bent. What do I do and who needs to know?",
+      "passed": true,
+      "case_score": 10.0,
+      "code_score": 10.0,
+      "judge_score": 10,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'full', accepted ['full']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'FLM', accepted ['FLM']"
+        }
+      ],
+      "judge": {
+        "score": 10,
+        "reason": "Fully correct: covers stopping use, parking safely, tagging, no self-repair, telling the FLM and logging the same shift, and the FLM reporting to maintenance and escalating to the Senior FLM, all matching SOP-EQ-01.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11767,
+        "output_tokens": 114,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "Bent forks mean the pallet truck has failed its check. Stop using it straight away and take it out of use. Do not repair it yourself and do not work around the fault. Tell your FLM straight away. The FLM reports it to maintenance and escalates to the Senior FLM the same shift, because the equipment is out of service.",
+          "steps": [
+            "Stop using the pallet truck straight away. Do not work around the fault.",
+            "Record the failed check on the Pre-Use Equipment Checklist.",
+            "Park it safely: forks fully lowered, out of aisles and clear of fire exits and emergency lanes. If it is a powered truck, switch it off and remove the key.",
+            "Attach a 'Do Not Use — Faulty' tag stating the fault (bent forks), the date and who found it.",
+            "Do not try to repair it. Repairs are done by maintenance only.",
+            "Tell your FLM straight away. If your FLM is unavailable, go to the Senior FLM.",
+            "Log the faulty equipment in the incident system (or paper log if the system is down) the same shift.",
+            "The FLM reports it to maintenance and escalates to the Senior FLM the same shift. Only maintenance or the repairing engineer can remove the tag once the repair is confirmed."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "3.2"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "4"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "5"
+            },
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "3.3"
+            }
+          ],
+          "coverage": "full",
+          "safety_alert": false,
+          "escalate_to": "FLM",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 9.52,
+      "assistant_input_tokens": 11320,
+      "assistant_output_tokens": 548,
+      "judge_input_tokens": 11767,
+      "judge_output_tokens": 114
+    },
+    {
+      "id": "multi-04",
+      "category": "multi_sop",
+      "question": "I'm an FLM. We keep getting damaged pallets and damaged goods from the same supplier. What should happen?",
+      "passed": true,
+      "case_score": 10.0,
+      "code_score": 10.0,
+      "judge_score": 10,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited; also cited ['SOP-GI-01', 'SOP-GI-01']"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'full', accepted ['full']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'Senior FLM', accepted ['Senior FLM']"
+        }
+      ],
+      "judge": {
+        "score": 10,
+        "reason": "The answer is fully correct. It says the FLM raises the repeated damage with the Senior FLM, who follows up with the supplier and informs the Shift Manager. It also says each case is still logged, with the supplier recorded for pallets that arrived with a delivery, and its extra detail matches the SOPs.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11854,
+        "output_tokens": 258,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "Repeated damage from the same supplier is escalated by you (the FLM) to the Senior FLM, who follows up with the supplier and informs the Shift Manager. This applies to both damaged goods and damaged pallets. Operatives should log each case so the pattern can be spotted.",
+          "steps": [
+            "Make sure each damaged item or pallet is logged in the incident system (or paper log) and the supplier is recorded for pallets that arrived with a delivery, so repeats show up.",
+            "Check that damaged goods are in quarantine and tagged per SOP-DG-01, and damaged empty pallets are tagged 'Do Not Use – Damaged' and in the damaged-pallet area per SOP-EQ-01. Keep hired and owned pallets separate.",
+            "For goods-in damage, hold the rest of the affected pallet in goods-in staging until you confirm how to proceed (SOP-GI-01 Section 4).",
+            "Raise the repeated damage from this supplier with the Senior FLM.",
+            "The Senior FLM follows up with the supplier and informs the Shift Manager.",
+            "File supplier-fault goods damage against the relevant purchase order for recharge or replacement (SOP-DG-01 Section 4).",
+            "If you are unavailable, operatives go to the Senior FLM."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "Reporting / Escalation"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "4.4"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "2"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "Reporting / Escalation"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "2"
+            },
+            {
+              "sop_id": "SOP-GI-01",
+              "section": "4.3"
+            },
+            {
+              "sop_id": "SOP-GI-01",
+              "section": "4.2"
+            }
+          ],
+          "coverage": "full",
+          "safety_alert": false,
+          "escalate_to": "Senior FLM",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 11.53,
+      "assistant_input_tokens": 11332,
+      "assistant_output_tokens": 656,
+      "judge_input_tokens": 11854,
+      "judge_output_tokens": 258
+    },
+    {
+      "id": "safety-01",
+      "category": "safety_injury",
+      "question": "Someone's just been hit by a forklift.",
+      "passed": true,
+      "case_score": 9.5,
+      "code_score": 10.0,
+      "judge_score": 9,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got True, accepted [True]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'full', accepted ['partial', 'full']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'FLM', accepted ['FLM']"
+        }
+      ],
+      "judge": {
+        "score": 9,
+        "reason": "The answer is correct and safe. It says to alert the FLM or a first aider immediately and make the area safe, and that the FLM informs the Shift Manager if medical attention is needed. It covers logging with first-aid details and invents no forklift-specific procedure, though it does not state the 'do not wait for end-of-shift review' rule outright.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11540,
+        "output_tokens": 422,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "STOP. Alert your FLM or a first aider immediately. A person has been injured. Make the area safe first, then report.",
+          "steps": [
+            "Alert your FLM or a first aider immediately. Make sure your FLM knows, even if a first aider is already dealing with it.",
+            "Make the immediate area safe: isolate the equipment and clear people from danger.",
+            "Log the incident in the incident system (or paper log if the system is down) as soon as the area is safe, and no later than the end of the shift. Record what happened, where, when, who was involved and any immediate action taken.",
+            "Also record whether first aid was given and by whom.",
+            "Your FLM must inform the Shift Manager straight away if the injury needs medical attention.",
+            "If your FLM is unavailable, go to the Senior FLM."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "1"
+            },
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "2"
+            },
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "Reporting / Escalation"
+            }
+          ],
+          "coverage": "full",
+          "safety_alert": true,
+          "escalate_to": "FLM",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 9.29,
+      "assistant_input_tokens": 11309,
+      "assistant_output_tokens": 371,
+      "judge_input_tokens": 11540,
+      "judge_output_tokens": 422
+    },
+    {
+      "id": "safety-02",
+      "category": "safety_injury",
+      "question": "I've twinged my back lifting a carton but it's only minor. Do I need to report it?",
+      "passed": true,
+      "case_score": 10.0,
+      "code_score": 10.0,
+      "judge_score": 10,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got True, accepted [True]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'full', accepted ['full']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'FLM', accepted ['FLM']"
+        }
+      ],
+      "judge": {
+        "score": 10,
+        "reason": "Fully correct: covers reporting however minor, alerting the FLM or a first aider immediately with the FLM informed, logging the same shift with the required details, and stopping manual handling until the FLM clears it, all as stated in the SOPs.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11526,
+        "output_tokens": 110,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "Yes, you must report it, however minor it seems. Alert your FLM or a first aider immediately and make sure your FLM knows, even if a first aider deals with it. Stop manual handling until your FLM clears you.",
+          "steps": [
+            "Stop and alert your FLM or a first aider immediately.",
+            "Make sure your FLM knows about it, even if a first aider has dealt with it.",
+            "Do not carry on with manual handling duties until your FLM clears you.",
+            "Log the incident in the incident system (or paper log if the system is down) the same shift. Record what happened, where, when, who was involved, and whether first aid was given and by whom.",
+            "If your FLM is unavailable, go to the Senior FLM."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-MH-01",
+              "section": "5"
+            },
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "What Counts as an Incident"
+            },
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "1"
+            },
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "2"
+            }
+          ],
+          "coverage": "full",
+          "safety_alert": true,
+          "escalate_to": "FLM",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 8.23,
+      "assistant_input_tokens": 11323,
+      "assistant_output_tokens": 370,
+      "judge_input_tokens": 11526,
+      "judge_output_tokens": 110
+    },
+    {
+      "id": "safety-03",
+      "category": "safety_injury",
+      "question": "A pallet of liquid chemicals has leaked across the aisle.",
+      "passed": true,
+      "case_score": 9.0,
+      "code_score": 10.0,
+      "judge_score": 8,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited; also cited ['SOP-DG-01', 'SOP-DG-01', 'SOP-DG-01', 'SOP-GI-01']"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got True, accepted [True]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'partial', accepted ['partial']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'FLM', accepted ['FLM']"
+        }
+      ],
+      "judge": {
+        "score": 8,
+        "reason": "All key facts are present: make the area safe, notify the FLM immediately, the FLM informs the Shift Manager, and log the incident, with no clean-up method invented. One minor imprecision: it offers 'FLM or a first aider' for a chemical spill, but the SOP gives the first-aider option only for injuries, though step 4 correctly says to tell the FLM immediately.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11830,
+        "output_tokens": 386,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "STOP. Keep people clear of the spill and alert your FLM or a first aider immediately, before doing anything else. Make the area safe first, then report. The FLM informs the Shift Manager straight away for a chemical spill.",
+          "steps": [
+            "Stop work and alert your FLM or a first aider immediately.",
+            "Make the area safe first: cordon off the spill and clear people from danger.",
+            "Do not leave leaking product in a live bin, on the pack bench or in goods-in staging. Once it is safe, quarantine the damaged item with a damaged-goods tag (SKU, quantity, date, who found it).",
+            "Do not wait for end of shift. Tell your FLM immediately about the chemical spill and any damage affecting chemical containment. The FLM informs the Shift Manager straight away.",
+            "Log the incident in the incident system (or paper log if the system is down) as soon as the area is safe. Damaged goods must be logged within 15 minutes of discovery.",
+            "Record what happened, where, when, who was involved, SKU, quantity and damage type, and take a photo if the system supports it.",
+            "If the pallet was found at goods-in, hold the rest of the pallet in goods-in staging. Only the damaged item goes to quarantine.",
+            "If your FLM is unavailable, go to the Senior FLM."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "1"
+            },
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "2"
+            },
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "Reporting / Escalation"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "2"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "3"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "Reporting / Escalation"
+            },
+            {
+              "sop_id": "SOP-GI-01",
+              "section": "4"
+            }
+          ],
+          "coverage": "partial",
+          "safety_alert": true,
+          "escalate_to": "FLM",
+          "confidence": "medium"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 9.97,
+      "assistant_input_tokens": 11317,
+      "assistant_output_tokens": 644,
+      "judge_input_tokens": 11830,
+      "judge_output_tokens": 386
+    },
+    {
+      "id": "none-01",
+      "category": "not_covered",
+      "question": "What's the process for booking holiday?",
+      "passed": true,
+      "case_score": 10.0,
+      "code_score": 10.0,
+      "judge_score": 10,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "cited none, as expected"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'none', accepted ['none']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'FLM', accepted ['FLM']"
+        }
+      ],
+      "judge": {
+        "score": 10,
+        "reason": "Fully correct: it states plainly that the SOPs do not cover holiday booking, directs the worker to their FLM, and invents no process.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11155,
+        "output_tokens": 77,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "Booking holiday isn't covered by any of the SOPs I have. I can't guess at the process, so please ask your FLM.",
+          "steps": [
+            "Ask your FLM how to book holiday."
+          ],
+          "sources": [],
+          "coverage": "none",
+          "safety_alert": false,
+          "escalate_to": "FLM",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 8.35,
+      "assistant_input_tokens": 11306,
+      "assistant_output_tokens": 109,
+      "judge_input_tokens": 11155,
+      "judge_output_tokens": 77
+    },
+    {
+      "id": "none-02",
+      "category": "not_covered",
+      "question": "What's the pre-use check for a forklift?",
+      "passed": true,
+      "case_score": 9.5,
+      "code_score": 10.0,
+      "judge_score": 9,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'none', accepted ['none']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'FLM', accepted ['FLM']"
+        }
+      ],
+      "judge": {
+        "score": 9,
+        "reason": "Correctly states that SOP-EQ-01 excludes forklifts, refers the worker to their FLM, and neither invents a check nor substitutes the pallet truck or stacker checklist. The added caution not to use a forklift until trained and signed off is a slight extension of SOP-MH-01's training rule, but it is safe and does not create a new procedure.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11307,
+        "output_tokens": 360,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "The SOPs don't cover forklifts. SOP-EQ-01 explicitly excludes forklifts and other lifting equipment from its scope, so I can't give you a forklift pre-use check. Please ask your FLM. Do not use a forklift until you have the correct check from them.",
+          "steps": [
+            "Ask your FLM for the forklift pre-use check.",
+            "Do not use any forklift until you have been given the correct check and are trained and signed off on it."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "Scope"
+            }
+          ],
+          "coverage": "none",
+          "safety_alert": false,
+          "escalate_to": "FLM",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 10.24,
+      "assistant_input_tokens": 11309,
+      "assistant_output_tokens": 219,
+      "judge_input_tokens": 11307,
+      "judge_output_tokens": 360
+    },
+    {
+      "id": "none-03",
+      "category": "not_covered",
+      "question": "How do I process a return from a customer?",
+      "passed": true,
+      "case_score": 9.5,
+      "code_score": 10.0,
+      "judge_score": 9,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "cited none, as expected"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'none', accepted ['none']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'FLM', accepted ['FLM']"
+        }
+      ],
+      "judge": {
+        "score": 9,
+        "reason": "The answer correctly says no SOP covers customer returns, refuses to adapt the goods-in or damaged-goods steps, and sends the worker to their FLM. Its extra 'don't put it away yet' line only defers action until the FLM decides, so it is not an invented procedure.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11257,
+        "output_tokens": 465,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "Customer returns are not covered by any of the SOPs I have. I can't give you a procedure for this, and I won't borrow steps from the goods-in or damaged-goods SOPs because they were not written for returns. Please ask your FLM how to process it.",
+          "steps": [
+            "Ask your FLM how to process the customer return.",
+            "Do not put the returned stock away or into live bins until your FLM has told you what to do."
+          ],
+          "sources": [],
+          "coverage": "none",
+          "safety_alert": false,
+          "escalate_to": "FLM",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 12.11,
+      "assistant_input_tokens": 11306,
+      "assistant_output_tokens": 178,
+      "judge_input_tokens": 11257,
+      "judge_output_tokens": 465
+    },
+    {
+      "id": "escalate-01",
+      "category": "followup_escalation",
+      "question": "I need to report a large discrepancy on a delivery but my FLM isn't on shift. Who do I go to?",
+      "passed": true,
+      "case_score": 9.0,
+      "code_score": 10.0,
+      "judge_score": 8,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited; also cited ['SOP-IR-01', 'SOP-DG-01']"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'full', accepted ['full']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'Senior FLM', accepted ['Senior FLM']"
+        }
+      ],
+      "judge": {
+        "score": 8,
+        "reason": "All key facts are present and nothing is invented. One minor imprecision: the summary ties the 'before the vehicle leaves site' rule only to rejected deliveries, though SOP-GI-01 applies it to large discrepancies too. Step 5 states the rule correctly without that condition.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11698,
+        "output_tokens": 347,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "Go to the Senior FLM. SOP-GI-01 says that if your FLM is unavailable, you go to the Senior FLM. A large discrepancy is more than 5% of the expected quantity, or more than 10 units (either is enough). Log it within 15 minutes and keep the rest of the pallet held in goods-in staging. If the delivery is being rejected, the Senior FLM must be informed before the vehicle leaves site.",
+          "steps": [
+            "Log the discrepancy in the incident system (or paper log if the system is down) within 15 minutes of discovery.",
+            "Hold the rest of the affected pallet in goods-in staging. Do not put any of it away until the discrepancy is resolved.",
+            "If any item is damaged, move only that item to the damaged-goods quarantine area per SOP-DG-01.",
+            "Notify the Senior FLM immediately, as your FLM is unavailable.",
+            "Make sure the Senior FLM knows before the delivery vehicle leaves site."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-GI-01",
+              "section": "Reporting / Escalation"
+            },
+            {
+              "sop_id": "SOP-GI-01",
+              "section": "4.1"
+            },
+            {
+              "sop_id": "SOP-GI-01",
+              "section": "4.2"
+            },
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "Definitions"
+            },
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "2.3"
+            }
+          ],
+          "coverage": "full",
+          "safety_alert": false,
+          "escalate_to": "Senior FLM",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 11.48,
+      "assistant_input_tokens": 11330,
+      "assistant_output_tokens": 499,
+      "judge_input_tokens": 11698,
+      "judge_output_tokens": 347
+    },
+    {
+      "id": "escalate-02",
+      "category": "followup_escalation",
+      "question": "I'm an FLM and I want to write off a damaged high-value item. Who has to approve it?",
+      "passed": true,
+      "case_score": 10.0,
+      "code_score": 10.0,
+      "judge_score": 10,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited; also cited ['SOP-IR-01']"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'full', accepted ['full']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'Senior FLM', accepted ['Senior FLM']"
+        }
+      ],
+      "judge": {
+        "score": 10,
+        "reason": "Fully correct: it says high-value write-offs need Senior FLM approval before stock records change, defines high-value as over £500, and includes the same-day stock update and filing supplier-fault damage against the PO.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11509,
+        "output_tokens": 99,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "A write-off of a high-value item needs Senior FLM approval before stock records are changed. A high-value item is one with a unit value over £500 (marked high_value = yes in the stock list). The FLM decides whether the item is written off, returned to supplier or downgraded, but cannot change stock records for a high-value write-off without the Senior FLM's approval.",
+          "steps": [
+            "Decide the outcome (write off, return to supplier or downgrade) per current stock policy.",
+            "Confirm the item is high-value: unit value over £500, or high_value = yes in the stock list.",
+            "Get Senior FLM approval before changing any stock records.",
+            "Once approved, update stock records to remove the written-off quantity from available stock the same day.",
+            "If the damage was the supplier's fault, file it against the relevant purchase order for recharge or replacement."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-DG-01",
+              "section": "4"
+            },
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "Definitions"
+            }
+          ],
+          "coverage": "full",
+          "safety_alert": false,
+          "escalate_to": "Senior FLM",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 10.53,
+      "assistant_input_tokens": 11325,
+      "assistant_output_tokens": 362,
+      "judge_input_tokens": 11509,
+      "judge_output_tokens": 99
+    },
+    {
+      "id": "edge-01",
+      "category": "edge_case",
+      "question": "We've got a damaged hired pallet. Can I get it repaired or scrap it on site, and where does it go?",
+      "passed": true,
+      "case_score": 10.0,
+      "code_score": 10.0,
+      "judge_score": 10,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'full', accepted ['full']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'FLM', accepted ['FLM']"
+        }
+      ],
+      "judge": {
+        "score": 10,
+        "reason": "Fully correct. The answer covers no on-site repair or scrapping, the tag details, separation from owned pallets in the damaged-pallet area, collection by the pool company, same-shift logging and telling the FLM straight away.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11795,
+        "output_tokens": 191,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "No. Hired pallets cannot be repaired, dismantled, scrapped or disposed of on site. A damaged hired pallet is tagged, logged, and moved to the damaged-pallet area, kept separate from owned pallets, where it stays until the pool company collects it. This is routine handling, not an injury emergency.",
+          "steps": [
+            "Stop using the pallet. Never carry or store stock on it or put it in racking.",
+            "Attach a 'Do Not Use — Damaged' tag stating the defect, the date, and who found it.",
+            "Log it in the incident system (or paper log if the system is down) the same shift, recording the defect and, if it arrived with a delivery, the supplier.",
+            "Move it to the signed damaged-pallet area, away from walkways and fire exits.",
+            "Keep it separate from owned pallets, because hired pallets are collected by the pool company.",
+            "Leave it there until collection. Tell your FLM straight away. If your FLM is unavailable, go to the Senior FLM."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "2.2"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "2.3"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "2.4"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "2.5"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "2.6"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "5.1"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "Reporting / Escalation"
+            }
+          ],
+          "coverage": "full",
+          "safety_alert": false,
+          "escalate_to": "FLM",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 10.88,
+      "assistant_input_tokens": 11330,
+      "assistant_output_tokens": 554,
+      "judge_input_tokens": 11795,
+      "judge_output_tokens": 191
+    },
+    {
+      "id": "edge-02",
+      "category": "edge_case",
+      "question": "A delivery is 8 units short on an order of 200. Is that a large discrepancy?",
+      "passed": true,
+      "case_score": 9.5,
+      "code_score": 10.0,
+      "judge_score": 9,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'full', accepted ['full']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'none', accepted ['none', 'FLM']"
+        }
+      ],
+      "judge": {
+        "score": 9,
+        "reason": "The answer is fully correct. It gives the 4% and 8-unit calculation against the 5% and 10-unit thresholds, logging within 15 minutes, holding the pallet in goods-in staging until the FLM confirms, and Senior FLM escalation only for high-value or repeated discrepancies.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11609,
+        "output_tokens": 275,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "No. 8 units short on an order of 200 is not a large discrepancy. It is 4% of the expected quantity (under the 5% limit) and 8 units (under the 10-unit limit). A discrepancy is only 'large' if it exceeds 5% or more than 10 units, and either one is enough. It is still a discrepancy, so it must be logged and the rest of the pallet held in goods-in staging until your FLM confirms how to proceed.",
+          "steps": [
+            "Do not guess or accept the quantity as it is. Log the shortage as a discrepancy in the incident system (or paper log if the system is down) within 15 minutes of discovery.",
+            "Hold the rest of the affected pallet in goods-in staging until your FLM confirms how to proceed. Do not put away stock with an open discrepancy.",
+            "If the item is high-value (over £500 unit value) or the discrepancy is repeated, tell your FLM, who escalates to the Senior FLM."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "Definitions"
+            },
+            {
+              "sop_id": "SOP-GI-01",
+              "section": "4"
+            },
+            {
+              "sop_id": "SOP-GI-01",
+              "section": "2.3"
+            }
+          ],
+          "coverage": "full",
+          "safety_alert": false,
+          "escalate_to": "none",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 10.8,
+      "assistant_input_tokens": 11323,
+      "assistant_output_tokens": 428,
+      "judge_input_tokens": 11609,
+      "judge_output_tokens": 275
+    }
+  ]
+}
