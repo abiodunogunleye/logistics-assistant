@@ -1,0 +1,257 @@
+{
+  "suite": "warehouse",
+  "started_at": "2026-11-06T13:22:17",
+  "config": {
+    "assistant_model": "claude-sonnet-5-5",
+    "judge_model": "claude-opus-5-5",
+    "cmd": "{python} src/ask.py --json {question}",
+    "claude_env": {
+      "CLAUDE_CODE_SSE_PORT": "34364"
+    },
+    "git_sha": "b75dde5"
+  },
+  "estimate": {
+    "cases": 2,
+    "tokens": {
+      "assistant_input": 16482,
+      "assistant_output": 1200,
+      "judge_input": 20344,
+      "judge_output": 720
+    },
+    "usd": {
+      "assistant": 0.044964,
+      "judge": 0.095776,
+      "total": 0.14074
+    }
+  },
+  "summary": {
+    "overall": {
+      "cases": 2,
+      "passed": 2,
+      "mean_score": 10.0,
+      "mean_code_score": 10.0,
+      "mean_judge_score": 10.0,
+      "total_seconds": 21.61,
+      "total_assistant_input_tokens": 22640,
+      "total_assistant_output_tokens": 1056,
+      "total_judge_input_tokens": 23504,
+      "total_judge_output_tokens": 303
+    },
+    "by_category": {
+      "edge_case": {
+        "cases": 1,
+        "passed": 1,
+        "mean_score": 10.0,
+        "mean_code_score": 10.0,
+        "mean_judge_score": 10.0,
+        "total_seconds": 9.49,
+        "total_assistant_input_tokens": 11323,
+        "total_assistant_output_tokens": 462,
+        "total_judge_input_tokens": 11655,
+        "total_judge_output_tokens": 214
+      },
+      "single_sop": {
+        "cases": 1,
+        "passed": 1,
+        "mean_score": 10.0,
+        "mean_code_score": 10.0,
+        "mean_judge_score": 10.0,
+        "total_seconds": 12.12,
+        "total_assistant_input_tokens": 11317,
+        "total_assistant_output_tokens": 594,
+        "total_judge_input_tokens": 11849,
+        "total_judge_output_tokens": 89
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "single-04",
+      "category": "single_sop",
+      "question": "How do I do the start-of-shift check on a powered pallet truck?",
+      "passed": true,
+      "case_score": 10.0,
+      "code_score": 10.0,
+      "judge_score": 10,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'full', accepted ['full']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'none', accepted ['none']"
+        }
+      ],
+      "judge": {
+        "score": 10,
+        "reason": "All key facts are present and match SOP-EQ-01 Sections 3–5, including the powered-only checks and correct out-of-use steps; nothing invented or unsafe.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11849,
+        "output_tokens": 89,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "Check the truck at the start of each shift and record it on the Pre-Use Equipment Checklist (SOP-EQ-01, Pallets & Handling Equipment). A powered pallet truck needs the standard pallet truck checks plus the powered-only checks. Only operators trained and signed off on the truck may use it unsupervised.",
+          "steps": [
+            "Check the forks are straight, with no cracks or bends.",
+            "Check the wheels and fork rollers are present, undamaged and turn freely.",
+            "Check the truck lifts, holds a load without sinking, and lowers when released.",
+            "Check the handle and controls work and return to neutral.",
+            "Check the battery is charged and the charging lead is undamaged.",
+            "Check the brakes, horn and emergency reverse (belly button) work.",
+            "Record the check on the Pre-Use Equipment Checklist (paper or handheld).",
+            "If any check fails: stop using the truck, park it with forks fully lowered and clear of aisles, fire exits and emergency lanes, switch it off and remove the key.",
+            "Tag it 'Do Not Use — Faulty' with the fault, date and who found it. Do not attempt a repair.",
+            "Tell your FLM straight away and log the fault in the incident system the same shift."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "3.1"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "3.2"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "3.4"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "3.6"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "4"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "5"
+            }
+          ],
+          "coverage": "full",
+          "safety_alert": false,
+          "escalate_to": "none",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 12.12,
+      "assistant_input_tokens": 11317,
+      "assistant_output_tokens": 594,
+      "judge_input_tokens": 11849,
+      "judge_output_tokens": 89
+    },
+    {
+      "id": "edge-02",
+      "category": "edge_case",
+      "question": "A delivery is 8 units short on an order of 200. Is that a large discrepancy?",
+      "passed": true,
+      "case_score": 10.0,
+      "code_score": 10.0,
+      "judge_score": 10,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'full', accepted ['full']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'FLM', accepted ['FLM']"
+        }
+      ],
+      "judge": {
+        "score": 10,
+        "reason": "Fully correct: the answer applies both thresholds (4% and under 10 units) and requires logging within 15 minutes. It holds the pallet in staging pending FLM confirmation and correctly limits Senior FLM escalation to high-value or repeated discrepancies.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 11655,
+        "output_tokens": 214,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "No. 8 units short on an order of 200 is not a large discrepancy. A large discrepancy is more than 5% of the expected quantity, or more than 10 units (either one is enough). 5% of 200 is 10 units, and 8 is both under 10 units and under 5% (4%). It is still a discrepancy, so it must be logged and handled under goods-in discrepancy rules.",
+          "steps": [
+            "Do not guess or accept it as correct: log the shortage as a discrepancy in the incident system (or paper log if the system is down) within 15 minutes of discovery.",
+            "Hold the rest of the affected pallet in goods-in staging. Do not put away stock with an open discrepancy until your FLM confirms how to proceed.",
+            "Tell your FLM. If the item is high-value (unit value over £500) or the discrepancies are repeated, the FLM escalates to the Senior FLM.",
+            "If your FLM is unavailable, go to the Senior FLM."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "Definitions"
+            },
+            {
+              "sop_id": "SOP-GI-01",
+              "section": "2.3"
+            },
+            {
+              "sop_id": "SOP-GI-01",
+              "section": "4"
+            },
+            {
+              "sop_id": "SOP-GI-01",
+              "section": "Reporting / Escalation"
+            }
+          ],
+          "coverage": "full",
+          "safety_alert": false,
+          "escalate_to": "FLM",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 9.49,
+      "assistant_input_tokens": 11323,
+      "assistant_output_tokens": 462,
+      "judge_input_tokens": 11655,
+      "judge_output_tokens": 214
+    }
+  ]
+}
