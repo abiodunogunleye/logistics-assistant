@@ -35,7 +35,7 @@ def write_cases(tmp_path, cases):
 def test_warehouse_cases_file_is_valid():
     cases = load_cases(CASES_FILE)
 
-    assert len(cases) == 20
+    assert len(cases) == 24
     assert Counter(case["category"] for case in cases) == {
         "single_sop": 6,
         "multi_sop": 4,
@@ -43,6 +43,7 @@ def test_warehouse_cases_file_is_valid():
         "not_covered": 3,
         "followup_escalation": 2,
         "edge_case": 2,
+        "adversarial": 4,
     }
 
 
