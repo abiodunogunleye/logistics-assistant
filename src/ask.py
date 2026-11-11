@@ -66,30 +66,49 @@ def answer_schema() -> dict:
     return _without_titles(StructuredAnswer.model_json_schema())
 
 
-def ask_json(client, config, system: str, question: str) -> bool:
-    """Ask for a reply constrained to StructuredAnswer, print it as JSON, and return whether it was valid."""
+class AnswerError(Exception):
+    """Claude's reply could not be turned into a StructuredAnswer; the message says why."""
+
+
+def structured_params(config) -> dict:
+    """The request settings plus the output format that constrains the reply to StructuredAnswer."""
     params = config.request_params()
     params["output_config"] = {
         **params["output_config"],
         "format": {"type": "json_schema", "schema": answer_schema()},
     }
+    return params
+
+
+def parse_structured(response) -> StructuredAnswer:
+    """Check a finished reply and parse it as a StructuredAnswer, or raise AnswerError."""
+    if response.stop_reason == "refusal":
+        raise AnswerError("Claude declined to answer this, so there is no JSON answer.")
+    if response.stop_reason == "max_tokens":
+        raise AnswerError("the reply was cut off at the token limit, so the JSON is incomplete.")
+
+    try:
+        return StructuredAnswer.model_validate_json(reply_text(response))
+    except ValidationError as error:
+        raise AnswerError(f"Claude's reply did not match the answer schema.\n{error}") from error
+
+
+def request_structured(client, config, system: str, question: str):
+    """Ask for a reply constrained to StructuredAnswer. Returns (answer, response); raises AnswerError."""
     response = client.messages.create(
-        **params,
+        **structured_params(config),
         system=system,
         messages=[{"role": "user", "content": question}],
     )
+    return parse_structured(response), response
 
-    if response.stop_reason == "refusal":
-        print("Error: Claude declined to answer this, so there is no JSON answer.", file=sys.stderr)
-        return False
-    if response.stop_reason == "max_tokens":
-        print("Error: the reply was cut off at the token limit, so the JSON is incomplete.", file=sys.stderr)
-        return False
 
+def ask_json(client, config, system: str, question: str) -> bool:
+    """Ask for a reply constrained to StructuredAnswer, print it as JSON, and return whether it was valid."""
     try:
-        answer = StructuredAnswer.model_validate_json(reply_text(response))
-    except ValidationError as error:
-        print(f"Error: Claude's reply did not match the answer schema.\n{error}", file=sys.stderr)
+        answer, response = request_structured(client, config, system, question)
+    except AnswerError as error:
+        print(f"Error: {error}", file=sys.stderr)
         return False
 
     print(answer.model_dump_json(indent=2))
