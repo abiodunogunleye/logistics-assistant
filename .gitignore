@@ -40,3 +40,6 @@ Thumbs.db
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Streamlit secrets (the deployed app's API key)
+.streamlit/secrets.toml

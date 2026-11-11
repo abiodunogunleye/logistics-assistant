@@ -49,6 +49,27 @@ def test_blocks_staged_env_file(git_repo):
     assert ".env" in result.stdout
 
 
+def test_blocks_staged_streamlit_secrets(git_repo):
+    (git_repo / ".streamlit").mkdir()
+    (git_repo / ".streamlit" / "secrets.toml").write_text('ANTHROPIC_API_KEY = "secret"\n')
+    subprocess.run(["git", "add", "-f", ".streamlit/secrets.toml"], cwd=git_repo, check=True)
+
+    result = run_hook(git_repo)
+
+    assert result.returncode != 0
+    assert "secrets.toml" in result.stdout
+
+
+def test_allows_streamlit_secrets_example(git_repo):
+    (git_repo / ".streamlit").mkdir()
+    (git_repo / ".streamlit" / "secrets.toml.example").write_text('ANTHROPIC_API_KEY = ""\n')
+    subprocess.run(["git", "add", ".streamlit/secrets.toml.example"], cwd=git_repo, check=True)
+
+    result = run_hook(git_repo)
+
+    assert result.returncode == 0
+
+
 def test_allows_env_example(git_repo):
     (git_repo / ".env.example").write_text("ANTHROPIC_API_KEY=\n")
     subprocess.run(["git", "add", ".env.example"], cwd=git_repo, check=True)
