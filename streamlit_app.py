@@ -87,7 +87,7 @@ def render_sidebar(used: int) -> None:
         st.subheader("Latest eval score")
         summary = latest_eval_summary()
         if summary is None:
-            st.caption("No eval results yet.")
+            st.caption("No full eval run of the current cases yet.")
         else:
             st.metric("Mean score", f"{summary.mean_score:.2f} / 10")
             st.caption(

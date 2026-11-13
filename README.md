@@ -22,7 +22,7 @@ The assistant will help with warehouse operations tasks such as inventory lookup
 
 ## Web app (demo)
 
-A Streamlit chat app (`streamlit_app.py`) answers questions from the SOPs with streaming text, the cited SOPs, an escalation badge (FLM / Senior FLM / Shift Manager) and a red banner when the answer flags a safety alert. It uses the same system prompt, SOPs and settings (`src/chat.py`, `src/config.py`) as the command-line tools. The sidebar shows the latest saved eval score from `evals/results/`; the app never runs an eval.
+A Streamlit chat app (`streamlit_app.py`) answers questions from the SOPs with streaming text, the cited SOPs, an escalation badge (FLM / Senior FLM / Shift Manager) and a red banner when the answer flags a safety alert. It uses the same system prompt, SOPs and settings (`src/chat.py`, `src/config.py`) as the command-line tools. The sidebar shows the score of the newest full eval run saved in `evals/results/`, meaning one that ran every case in `cases.json` (`--only` runs and regrades are skipped); the app never runs an eval.
 
 Run it locally (needs `ANTHROPIC_API_KEY` in `.env`):
 
