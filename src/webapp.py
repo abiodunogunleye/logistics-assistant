@@ -142,18 +142,34 @@ class EvalSummary:
     categories: int
 
 
-def latest_eval_summary(results_dir: Path = RESULTS_DIR) -> EvalSummary | None:
-    """The score of the saved eval run that covers the most cases (newest on a tie), or None if there is none.
+def suite_case_ids(cases_path: Path = CASES_PATH) -> frozenset[str]:
+    """The ids of every case in the eval suite, or an empty set if the cases file can't be read."""
+    try:
+        return frozenset(case["id"] for case in json.loads(cases_path.read_text(encoding="utf-8")))
+    except (OSError, ValueError, KeyError, TypeError):
+        return frozenset()
 
-    Regraded files are skipped, so the number is from a real run. Unreadable files are ignored.
+
+def latest_eval_summary(results_dir: Path = RESULTS_DIR, cases_path: Path = CASES_PATH) -> EvalSummary | None:
+    """The score of the newest full eval run, or None if there is none.
+
+    A run is full only if it ran exactly the cases now in the suite, so --only runs and runs from before
+    cases were added don't count. Regrades are skipped, so the number is from a real run, and unreadable
+    files are ignored. The newest is chosen by the run's full start time, not the file order.
     """
-    best = None
-    for path in sorted(results_dir.glob("*_warehouse.json")):
+    suite = suite_case_ids(cases_path)
+    if not suite:
+        return None
+
+    best, best_started = None, ""
+    for path in results_dir.glob("*_warehouse.json"):
         try:
             data = json.loads(path.read_text(encoding="utf-8"))
-            overall = data["summary"]["overall"]
+            if "regrade" in data or {case["id"] for case in data["cases"]} != suite:
+                continue
+            started, overall = data["started_at"], data["summary"]["overall"]
             summary = EvalSummary(
-                date=data["started_at"][:10],
+                date=started[:10],
                 cases=overall["cases"],
                 passed=overall["passed"],
                 mean_score=overall["mean_score"],
@@ -161,8 +177,8 @@ def latest_eval_summary(results_dir: Path = RESULTS_DIR) -> EvalSummary | None:
             )
         except (OSError, ValueError, KeyError, TypeError):
             continue
-        if best is None or (summary.cases, summary.date) >= (best.cases, best.date):
-            best = summary
+        if started > best_started:
+            best, best_started = summary, started
     return best
 
 

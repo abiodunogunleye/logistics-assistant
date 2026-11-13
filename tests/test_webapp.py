@@ -11,6 +11,7 @@ from chat import build_system_prompt
 from config import Config
 from conftest import FakeAnthropic
 from webapp import (
+    CASES_PATH,
     DAILY_LIMIT_MESSAGE,
     SESSION_LIMIT,
     SESSION_LIMIT_MESSAGE,
@@ -21,6 +22,7 @@ from webapp import (
     example_questions,
     latest_eval_summary,
     stream_structured,
+    suite_case_ids,
 )
 
 ANSWER = {
@@ -184,46 +186,91 @@ def test_admit_stops_at_the_session_limit_without_using_the_daily_count():
 # eval score
 
 
-def write_result(folder, name, started_at, cases, passed, mean_score):
+SUITE_IDS = ["single-01", "safety-01", "adversarial-01", "adversarial-02"]
+
+
+@pytest.fixture
+def suite(tmp_path):
+    """A cases file for a four-case suite; returns its path."""
+    path = tmp_path / "cases.json"
+    path.write_text(json.dumps([{"id": case_id, "question": "?"} for case_id in SUITE_IDS]), encoding="utf-8")
+    return path
+
+
+def write_result(folder, name, started_at, case_ids, passed, mean_score, regrade=False):
     data = {
         "started_at": started_at,
         "summary": {
-            "overall": {"cases": cases, "passed": passed, "mean_score": mean_score},
-            "by_category": {"a": {}, "b": {}},
+            "overall": {"cases": len(case_ids), "passed": passed, "mean_score": mean_score},
+            "by_category": {case_id.split("-")[0]: {} for case_id in case_ids},
         },
+        "cases": [{"id": case_id} for case_id in case_ids],
     }
+    if regrade:
+        data["regrade"] = {"from": "earlier run"}
+    folder.mkdir(exist_ok=True)
     (folder / name).write_text(json.dumps(data), encoding="utf-8")
 
 
-def test_latest_eval_summary_prefers_the_run_with_most_cases_then_the_newest(tmp_path):
-    write_result(tmp_path, "2026-10-23T001844_warehouse.json", "2026-10-23T00:18:44", 20, 17, 9.55)
-    write_result(tmp_path, "2026-11-06T125147_warehouse.json", "2026-11-06T12:51:47", 20, 18, 9.68)
-    write_result(tmp_path, "2026-11-06T161718_warehouse.json", "2026-11-06T16:17:18", 4, 4, 9.88)
-    write_result(tmp_path, "2026-11-06T125147_warehouse_regrade-no-api-calls.json", "2026-11-06T12:51:47", 20, 20, 9.78)
+def test_latest_eval_summary_is_the_newest_full_run(tmp_path, suite):
+    results = tmp_path / "results"
+    write_result(results, "2026-11-13T063922_warehouse.json", "2026-11-13T06:39:22", SUITE_IDS, 2, 9.58)
+    write_result(results, "2026-11-13T080512_warehouse.json", "2026-11-13T08:05:12", SUITE_IDS, 3, 9.71)
+    write_result(results, "2026-11-13T073043_warehouse.json", "2026-11-13T07:30:43", SUITE_IDS, 4, 9.62)
 
-    summary = latest_eval_summary(tmp_path)
+    summary = latest_eval_summary(results, suite)
 
     assert (summary.date, summary.cases, summary.passed, summary.mean_score, summary.categories) == (
-        "2026-11-06",
-        20,
-        18,
-        9.68,
-        2,
+        "2026-11-13",
+        4,
+        3,
+        9.71,
+        3,
     )
 
 
-def test_latest_eval_summary_is_none_without_usable_results(tmp_path):
-    assert latest_eval_summary(tmp_path) is None
-    assert latest_eval_summary(tmp_path / "missing") is None
+def test_newer_partial_runs_and_regrades_are_not_shown(tmp_path, suite):
+    results = tmp_path / "results"
+    write_result(results, "2026-11-13T080512_warehouse.json", "2026-11-13T08:05:12", SUITE_IDS, 3, 9.71)
+    # --only runs: newer, but they skip cases.
+    write_result(results, "2026-11-13T090000_warehouse.json", "2026-11-13T09:00:00", SUITE_IDS[2:], 2, 10.0)
+    write_result(results, "2026-11-13T091000_warehouse.json", "2026-11-13T09:10:00", SUITE_IDS[:3], 3, 10.0)
+    # A newer regrade of the full run, saved under a plain _warehouse.json name.
+    write_result(results, "2026-11-13T092000_warehouse.json", "2026-11-13T09:20:00", SUITE_IDS, 4, 9.9, regrade=True)
+
+    summary = latest_eval_summary(results, suite)
+
+    assert (summary.passed, summary.mean_score) == (3, 9.71)
+
+
+def test_runs_from_before_cases_were_added_are_not_full(tmp_path, suite):
+    results = tmp_path / "results"
+    write_result(results, "2026-11-06T125147_warehouse.json", "2026-11-06T12:51:47", SUITE_IDS[:2], 2, 9.68)
+
+    assert latest_eval_summary(results, suite) is None
+
+
+def test_latest_eval_summary_is_none_without_usable_results(tmp_path, suite):
+    assert latest_eval_summary(tmp_path / "missing", suite) is None
+    assert latest_eval_summary(tmp_path, tmp_path / "no-cases.json") is None
 
     (tmp_path / "2026-11-06T000000_warehouse.json").write_text("not json", encoding="utf-8")
     (tmp_path / "2026-11-07T000000_warehouse.json").write_text("{}", encoding="utf-8")
 
-    assert latest_eval_summary(tmp_path) is None
+    assert latest_eval_summary(tmp_path, suite) is None
 
 
-def test_the_real_results_folder_has_a_summary():
-    assert latest_eval_summary() is not None
+def test_the_real_app_shows_a_full_run_of_the_whole_suite():
+    # Fails if cases are added without a new full run being committed.
+    cases = json.loads(CASES_PATH.read_text(encoding="utf-8"))
+    categories = {case["category"] for case in cases}
+
+    summary = latest_eval_summary()
+
+    assert summary is not None
+    assert summary.cases == len(suite_case_ids()) == len(cases)
+    assert summary.categories == len(categories)
+    assert "adversarial" in categories
 
 
 # example questions
