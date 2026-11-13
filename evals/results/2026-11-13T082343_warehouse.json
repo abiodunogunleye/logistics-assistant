@@ -1,0 +1,172 @@
+{
+  "suite": "warehouse",
+  "started_at": "2026-11-13T08:23:43",
+  "config": {
+    "assistant_model": "claude-sonnet-5-5",
+    "judge_model": "claude-opus-5-5",
+    "cmd": "{python} src/ask.py --json {question}",
+    "claude_env": {
+      "CLAUDE_CODE_SSE_PORT": "31243"
+    },
+    "git_sha": "3f3cb10"
+  },
+  "estimate": {
+    "cases": 1,
+    "tokens": {
+      "assistant_input": 8241,
+      "assistant_output": 600,
+      "judge_input": 10172,
+      "judge_output": 360
+    },
+    "usd": {
+      "assistant": 0.022482,
+      "judge": 0.047888,
+      "total": 0.07037
+    }
+  },
+  "summary": {
+    "overall": {
+      "cases": 1,
+      "passed": 1,
+      "mean_score": 10.0,
+      "mean_code_score": 10.0,
+      "mean_judge_score": 10.0,
+      "total_seconds": 10.52,
+      "total_assistant_input_tokens": 11655,
+      "total_assistant_output_tokens": 733,
+      "total_judge_input_tokens": 12059,
+      "total_judge_output_tokens": 154
+    },
+    "by_category": {
+      "multi_sop": {
+        "cases": 1,
+        "passed": 1,
+        "mean_score": 10.0,
+        "mean_code_score": 10.0,
+        "mean_judge_score": 10.0,
+        "total_seconds": 10.52,
+        "total_assistant_input_tokens": 11655,
+        "total_assistant_output_tokens": 733,
+        "total_judge_input_tokens": 12059,
+        "total_judge_output_tokens": 154
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "multi-03",
+      "category": "multi_sop",
+      "question": "The forks on my pallet truck are bent. What do I do, who needs to know, and what do I put in the log?",
+      "passed": true,
+      "case_score": 10.0,
+      "code_score": 10.0,
+      "judge_score": 10,
+      "checks": [
+        {
+          "name": "valid_json",
+          "passed": true,
+          "detail": "parsed"
+        },
+        {
+          "name": "sop_ids",
+          "passed": true,
+          "detail": "all expected SOPs cited"
+        },
+        {
+          "name": "safety_alert",
+          "passed": true,
+          "detail": "got False, accepted [False]"
+        },
+        {
+          "name": "coverage",
+          "passed": true,
+          "detail": "got 'full', accepted ['full']"
+        },
+        {
+          "name": "escalate_to",
+          "passed": true,
+          "detail": "got 'FLM', accepted ['FLM']"
+        }
+      ],
+      "judge": {
+        "score": 10,
+        "reason": "The answer is fully correct. It includes every key fact: stop and do not work around the fault, park safely, apply the Do Not Use tag, no self-repair, tell the FLM and log the same shift with the SOP-IR-01 log contents, and the FLM goes to maintenance and the Senior FLM, all matching SOP-EQ-01 and SOP-IR-01.",
+        "unsafe_advice": false,
+        "invented_rules": false,
+        "input_tokens": 12059,
+        "output_tokens": 154,
+        "error": null
+      },
+      "assistant": {
+        "answer": {
+          "answer": "Bent forks mean the pallet truck has failed its check. Stop using it straight away, make it safe, tag it and tell your FLM. Never repair it yourself. If anyone has been hurt or nearly hurt, stop and alert your FLM or a first aider now.",
+          "steps": [
+            "Stop using the pallet truck straight away. Do not work around the fault.",
+            "Record the failed check on the Pre-Use Equipment Checklist.",
+            "Park it safely: forks fully lowered, out of aisles and clear of fire exits and emergency lanes. If it is a powered truck, switch it off and remove the key.",
+            "Attach a 'Do Not Use — Faulty' tag stating the fault (bent forks), the date and who found it.",
+            "Tell your FLM straight away. Do not attempt any repair: repairs are done by maintenance only.",
+            "Log it in the incident system (or paper log if the system is down) the same shift. Record what happened, where, when, who was involved and any immediate action taken (equipment parked and tagged).",
+            "The FLM reports the fault to maintenance and escalates to the Senior FLM the same shift, as the equipment is out of service. If your FLM is unavailable, go to the Senior FLM.",
+            "Leave the tag on. Only maintenance, or the engineer who repaired it, may remove it once the repair is confirmed."
+          ],
+          "sources": [
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "3.2"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "4.1"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "4.2"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "4.3"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "4.4"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "4.5"
+            },
+            {
+              "sop_id": "SOP-EQ-01",
+              "section": "5"
+            },
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "1.1"
+            },
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "1.2"
+            },
+            {
+              "sop_id": "SOP-IR-01",
+              "section": "1.3"
+            }
+          ],
+          "coverage": "full",
+          "safety_alert": false,
+          "escalate_to": "FLM",
+          "confidence": "high"
+        },
+        "returncode": 0,
+        "error": null,
+        "stdout_snippet": null,
+        "stderr_snippet": null
+      },
+      "seconds": 10.52,
+      "assistant_input_tokens": 11655,
+      "assistant_output_tokens": 733,
+      "judge_input_tokens": 12059,
+      "judge_output_tokens": 154
+    }
+  ]
+}
