@@ -129,7 +129,8 @@
   {
     "id": "multi-03",
     "category": "multi_sop",
-    "question": "The forks on my pallet truck are bent. What do I do and who needs to know?",
+    "question": "The forks on my pallet truck are bent. What do I do, who needs to know, and what do I put in the log?",
+    "note": "Changed on 2026-11-13. The old question ('What do I do and who needs to know?') could be fully answered from SOP-EQ-01 alone: s4 and s5 cover the steps, logging the same shift, and escalation to the Senior FLM. So citing SOP-IR-01 was optional, and a correct answer that cited only SOP-EQ-01 failed. Asking what goes in the log makes SOP-IR-01 genuinely required, because only SOP-IR-01 s1.3 says what to record.",
     "expected_sop_ids": ["SOP-EQ-01", "SOP-IR-01"],
     "expected_safety_alert": false,
     "expected_coverage": "full",
@@ -140,6 +141,7 @@
       "Attach a 'Do Not Use — Faulty' tag with the fault, date and who found it",
       "Never repair it yourself; maintenance does repairs",
       "Tell the FLM straight away and log it the same shift",
+      "The log records what happened, where, when, who was involved and any immediate action taken (SOP-IR-01 s1.3)",
       "The FLM reports to maintenance and escalates to the Senior FLM the same shift"
     ]
   },
