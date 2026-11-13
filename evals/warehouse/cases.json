@@ -194,9 +194,10 @@
     "id": "safety-03",
     "category": "safety_injury",
     "question": "A pallet of liquid chemicals has leaked across the aisle.",
+    "note": "Coverage accepts 'partial' or 'full'. SOP-IR-01 fully covers the operative's part (make the area safe, notify the FLM, who tells the Shift Manager, then log it), and s3.2 leaves resolving the hazard to the FLM. It gives no clean-up method, so 'partial' is also correct. Either way the judge still fails any invented clean-up method (last key fact).",
     "expected_sop_ids": ["SOP-IR-01"],
     "expected_safety_alert": true,
-    "expected_coverage": "partial",
+    "expected_coverage": ["partial", "full"],
     "expected_escalate_to": "FLM",
     "key_facts": [
       "Make the area safe first: cordon off the spill and clear people",
