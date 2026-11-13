@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import httpx2
 import pytest
 from anthropic import APIConnectionError
@@ -32,6 +34,36 @@ def test_load_sops_wraps_every_file_in_sop_tags():
     assert sops.count("</sop>") == len(files)
     for name in files:
         assert f'<sop file="{name}">' in sops
+
+
+def test_sop_and_prompt_files_are_read_as_utf8_whatever_the_locale(tmp_path, monkeypatch):
+    # Windows defaults to cp1252, which would turn the UTF-8 bytes of £ into Â£. CI runs on Linux,
+    # where the default is UTF-8, so check the encoding each read asks for rather than the result alone.
+    real_read_text = Path.read_text
+    encodings = []
+
+    def recording_read_text(self, encoding=None, errors=None, **kwargs):
+        encodings.append(encoding)
+        return real_read_text(self, encoding=encoding, errors=errors, **kwargs)
+
+    monkeypatch.setattr(Path, "read_text", recording_read_text)
+    sops_dir = tmp_path / "sops"
+    sops_dir.mkdir()
+    (sops_dir / "values.md").write_bytes("High-value item: over £500 — ask your FLM.".encode("utf-8"))
+    prompt = tmp_path / "system.md"
+    prompt.write_bytes("Use plain UK English — £ not $.\n{SOPS}".encode("utf-8"))
+
+    system = build_system_prompt(prompt, sops_dir)
+
+    assert "over £500 — ask your FLM." in system
+    assert system.startswith("Use plain UK English — £ not $.")
+    assert "Â" not in system
+    assert encodings == ["utf-8", "utf-8"]
+
+
+def test_real_sops_keep_the_pound_sign():
+    assert "over £500" in load_sops()
+    assert "Â" not in load_sops()
 
 
 def test_load_sops_raises_when_folder_is_empty(tmp_path):

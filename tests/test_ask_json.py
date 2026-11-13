@@ -176,3 +176,34 @@ def test_json_mode_never_streams(ask_json, fake_anthropic, monkeypatch, stream_s
 
 def test_structured_answer_round_trips():
     assert StructuredAnswer.model_validate(VALID_ANSWER).model_dump() == VALID_ANSWER
+
+
+UNCOVERED_ANSWER = {
+    **VALID_ANSWER,
+    "answer": "Forklifts are not covered by the SOPs. Never repair equipment yourself. Ask your FLM.",
+    "steps": ["Park it safely with forks lowered.", "Tag it Do Not Use."],
+    "sources": [{"sop_id": "SOP-EQ-01", "section": "Scope"}],
+    "coverage": "none",
+}
+
+
+def test_steps_are_dropped_when_coverage_is_none(ask_json, capsys):
+    ask_json(json.dumps(UNCOVERED_ANSWER), "Fix", "the", "forklift?")
+
+    printed = json.loads(capsys.readouterr().out)
+    assert printed == {**UNCOVERED_ANSWER, "steps": []}
+
+
+@pytest.mark.parametrize("coverage", ["full", "partial"])
+def test_steps_are_kept_when_the_sops_cover_the_question(ask_json, capsys, coverage):
+    ask_json(json.dumps({**VALID_ANSWER, "coverage": coverage}))
+
+    assert json.loads(capsys.readouterr().out)["steps"] == VALID_ANSWER["steps"]
+
+
+def test_non_ascii_in_the_reply_is_printed_intact(ask_json, capsys):
+    reply = {**VALID_ANSWER, "steps": ["Tell your FLM if the item is over £500."]}
+
+    ask_json(json.dumps(reply, ensure_ascii=False))
+
+    assert json.loads(capsys.readouterr().out)["steps"] == ["Tell your FLM if the item is over £500."]
