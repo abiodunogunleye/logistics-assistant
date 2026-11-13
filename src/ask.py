@@ -88,9 +88,21 @@ def parse_structured(response) -> StructuredAnswer:
         raise AnswerError("the reply was cut off at the token limit, so the JSON is incomplete.")
 
     try:
-        return StructuredAnswer.model_validate_json(reply_text(response))
+        answer = StructuredAnswer.model_validate_json(reply_text(response))
     except ValidationError as error:
         raise AnswerError(f"Claude's reply did not match the answer schema.\n{error}") from error
+    return without_uncovered_steps(answer)
+
+
+def without_uncovered_steps(answer: StructuredAnswer) -> StructuredAnswer:
+    """Drop any steps from an answer whose coverage is 'none'.
+
+    If no SOP covers the question there are no SOP steps to give, so any steps must have been
+    borrowed from an SOP written for something else. The prompt forbids this; this enforces it.
+    """
+    if answer.coverage == "none" and answer.steps:
+        return answer.model_copy(update={"steps": []})
+    return answer
 
 
 def request_structured(client, config, system: str, question: str):
